@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+  <Appenders>
+    <Console name="Console">
+      <PatternLayout pattern="%d{HH:mm:ss.SS} [%t] %-5level %logger{36} - %msg%n"/>
+    </Console>
+    <File name="myLogfile" fileName="C:\main\Programs\JavaWorkspace\testServerLogger\log.log">
+    	<PatternLayout pattern="%d{HH:mm:ss.SS} [%t] %-5level %logger{36} - %msg%n"/>
+    </File>
+  </Appenders>
+  <Loggers>
+    <Root level="trace">
+      <AppenderRef ref="myLogfile"/>
+    </Root>
+  </Loggers>
+</Configuration>

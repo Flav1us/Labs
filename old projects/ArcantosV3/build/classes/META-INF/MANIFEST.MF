@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Ant-Version: Apache Ant 1.9.4
+Created-By: 1.8.0_65-b17 (Oracle Corporation)
+Class-Path: lib/com.lowagie.text-2.1.7.jar lib/commons-io-2.4.jar lib/
+ javamail-1.4.3.jar
+X-COMMENT: Main-Class will be added automatically by build
+Main-Class: arcantosv3.ArcantosV3
+

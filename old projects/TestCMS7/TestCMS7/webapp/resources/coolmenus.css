@@ -1,0 +1,136 @@
+/* CoolMenus 4 - default styles - do not edit */
+.clCMEvent{position:absolute; z-index:300; width:100%; height:100%; clip:rect(0,100%,100%,0); left:0; top:0; visibility:hidden}
+.clCMAbs{position:absolute; visibility:hidden; left:0; top:0}
+/* CoolMenus 4 - default styles - end */
+
+/*Style for the background-bar*/
+
+.DivTbody{
+        overflow : auto;
+        height: 300px;
+        width: 100%;
+        border : solid 0px;
+        border-color :  #bbb;
+     }
+
+.td1{border-right: 1px  solid #666666; }
+
+.buttom{
+	width:110px;
+	cursor:pointer;
+  	}
+
+.tr1{
+	height:30px;
+	text-align : center;
+  	}
+
+.tr2{
+	height:25px;
+	text-align : center;
+	cursor:pointer;
+  	}
+
+.table{
+  font-size:11px;
+  cellpadding:0;
+  cellspacing:0;
+  align:center;
+ }
+
+.table1{
+  width:90%;
+ }
+
+.table2{
+  width:50%;
+ }
+
+.text{
+	color :#2C5987;
+	font-size:10px;
+}
+
+.text1{
+	width :250px;
+}
+
+.text2{
+	width :100px;
+}
+
+.text3{
+	background-color:#c3c3c3;
+}
+
+
+.text4{
+  font-size:11px;
+  font-weight : bold;
+}
+
+
+.header1{
+	border : thick;
+	color:#3C79B7;
+	font-weight : 900;
+	font-size:19px;
+	font-style : italic;
+}
+
+.header2{
+	color:#2C5987;
+	font-weight : bold;
+	font-size:14px;
+	text-align : center;
+	background: #C3C3C3;
+}
+.bottombody{
+	background-color: #E1E1E1;
+	font-family:"MS Sans Serif", Geneva, sans-serif;
+	color :#2C5987;
+	font-size:8px;
+	margin : 0px 0px 0px 0px;
+    scrollbar-arrow-color:#2C5987;
+	scrollbar-base-color:#e1e1e1;
+	scrollbar-face-color:#e1e1e1;
+	scrollbar-highlight-color:#eeeeee;
+	scrollbar-shadow-color : #666;
+	scrollbar-3dlight-color:#666;
+    scrollbar-darkshadow-color:#ffffff;
+}
+
+
+.text5{
+  font-size:11px;
+ }
+
+
+.frameborder {
+	background-color: #2C5987;
+
+}
+
+
+INPUT {
+	COLOR: #2C5987;
+	font-size: 8pt;
+	font-weight: 300;
+}
+
+.error {
+    font-family: "MS Sans Serif", Geneva, sans-serif;
+    font-size: medium;
+    font-weight: bold;
+    color: #FF0000;
+}
+
+
+
+
+.textLegend{
+  font-size:11px;
+  font-weight : bold;
+  color :#2C5987;
+}
+

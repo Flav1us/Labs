@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" metadata-complete="true" version="3.0">
+  <display-name>experimentalWebSite1</display-name>
+  <servlet>
+    <servlet-name>home</servlet-name>
+    <servlet-class>main.Home</servlet-class>
+    <init-param>
+      <param-name>param1</param-name>
+      <param-value>value1</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>home</servlet-name>
+    <url-pattern>/home</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>aboutus</servlet-name>
+    <servlet-class>main.AboutUs</servlet-class>
+    <init-param>
+      <param-name>param1</param-name>
+      <param-value>value1</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>aboutus</servlet-name>
+    <url-pattern>/about_us</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>contacts</servlet-name>
+    <servlet-class>main.Contacts</servlet-class>
+    <init-param>
+      <param-name>param1</param-name>
+      <param-value>value1</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>contacts</servlet-name>
+    <url-pattern>/contacts</url-pattern>
+  </servlet-mapping>
+  <welcome-file-list>
+    <welcome-file>resources/jsp/home.jsp</welcome-file>
+  </welcome-file-list>
+</web-app>

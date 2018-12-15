@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" output="classes" path="src"/>
+	<classpathentry kind="var" path="JRE_LIB" sourcepath="JRE_SRC"/>
+	<classpathentry kind="lib" path="C:/main/Programs/JavaWorkspace/TestCMS7/webapp/WEB-INF/lib/dom.jar"/>
+	<classpathentry kind="lib" path="C:/main/Programs/JavaWorkspace/TestCMS7/webapp/WEB-INF/lib/jakarta-regexp-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/main/Programs/JavaWorkspace/TestCMS7/webapp/WEB-INF/lib/jaxen-full.jar"/>
+	<classpathentry kind="lib" path="C:/main/Programs/JavaWorkspace/TestCMS7/webapp/WEB-INF/lib/jaxp-api.jar"/>
+	<classpathentry kind="lib" path="C:/main/Programs/JavaWorkspace/TestCMS7/webapp/WEB-INF/lib/jdbc2_0-stdext.jar"/>
+	<classpathentry kind="lib" path="C:/main/Programs/JavaWorkspace/TestCMS7/webapp/WEB-INF/lib/jstl.jar"/>
+	<classpathentry kind="lib" path="C:/main/Programs/JavaWorkspace/TestCMS7/webapp/WEB-INF/lib/sax.jar"/>
+	<classpathentry kind="lib" path="C:/main/Programs/JavaWorkspace/TestCMS7/webapp/WEB-INF/lib/saxpath.jar"/>
+	<classpathentry kind="lib" path="C:/main/Programs/JavaWorkspace/TestCMS7/webapp/WEB-INF/lib/standard.jar"/>
+	<classpathentry kind="lib" path="C:/main/Programs/JavaWorkspace/TestCMS7/webapp/WEB-INF/lib/tools.jar"/>
+	<classpathentry kind="lib" path="C:/main/Programs/JavaWorkspace/TestCMS7/webapp/WEB-INF/lib/xalan.jar"/>
+	<classpathentry kind="lib" path="C:/main/Programs/JavaWorkspace/TestCMS7/webapp/WEB-INF/lib/xercesImpl.jar"/>
+	<classpathentry kind="lib" path="C:/apache-tomcat-7.0.73/lib/annotations-api.jar"/>
+	<classpathentry kind="lib" path="C:/apache-tomcat-7.0.73/lib/catalina-ant.jar"/>
+	<classpathentry kind="lib" path="C:/apache-tomcat-7.0.73/lib/catalina-ha.jar"/>
+	<classpathentry kind="lib" path="C:/apache-tomcat-7.0.73/lib/catalina-tribes.jar"/>
+	<classpathentry kind="lib" path="C:/apache-tomcat-7.0.73/lib/catalina.jar"/>
+	<classpathentry kind="lib" path="C:/apache-tomcat-7.0.73/lib/ecj-4.4.2.jar"/>
+	<classpathentry kind="lib" path="C:/apache-tomcat-7.0.73/lib/el-api.jar"/>
+	<classpathentry kind="lib" path="C:/apache-tomcat-7.0.73/lib/jasper-el.jar"/>
+	<classpathentry kind="lib" path="C:/apache-tomcat-7.0.73/lib/jasper.jar"/>
+	<classpathentry kind="lib" path="C:/apache-tomcat-7.0.73/lib/jsp-api.jar"/>
+	<classpathentry kind="lib" path="C:/apache-tomcat-7.0.73/lib/servlet-api.jar"/>
+	<classpathentry kind="lib" path="C:/apache-tomcat-7.0.73/lib/tomcat-api.jar"/>
+	<classpathentry kind="lib" path="C:/apache-tomcat-7.0.73/lib/tomcat-coyote.jar"/>
+	<classpathentry kind="lib" path="C:/apache-tomcat-7.0.73/lib/tomcat-dbcp.jar"/>
+	<classpathentry kind="lib" path="C:/apache-tomcat-7.0.73/lib/tomcat-i18n-es.jar"/>
+	<classpathentry kind="lib" path="C:/apache-tomcat-7.0.73/lib/tomcat-i18n-fr.jar"/>
+	<classpathentry kind="lib" path="C:/apache-tomcat-7.0.73/lib/tomcat-i18n-ja.jar"/>
+	<classpathentry kind="lib" path="C:/apache-tomcat-7.0.73/lib/tomcat-jdbc.jar"/>
+	<classpathentry kind="lib" path="C:/apache-tomcat-7.0.73/lib/tomcat-util.jar"/>
+	<classpathentry kind="lib" path="C:/apache-tomcat-7.0.73/lib/tomcat7-websocket.jar"/>
+	<classpathentry kind="lib" path="C:/apache-tomcat-7.0.73/lib/websocket-api.jar"/>
+	<classpathentry kind="lib" path="C:/main/Programs/JavaWorkspace/testLogger/src/lib/log4j-api-2.8.2.jar"/>
+	<classpathentry kind="lib" path="C:/main/Programs/JavaWorkspace/testLogger/src/lib/log4j-api-2.8.2-javadoc.jar"/>
+	<classpathentry kind="lib" path="C:/main/Programs/JavaWorkspace/testLogger/src/lib/log4j-core-2.8.2.jar"/>
+	<classpathentry kind="lib" path="C:/main/Programs/JavaWorkspace/testLogger/src/lib/log4j-core-2.8.2-javadoc.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
