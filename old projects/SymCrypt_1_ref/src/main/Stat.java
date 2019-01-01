@@ -1,6 +1,6 @@
 /*****************************
-  Компьютерный практикум №1
-  ФІ-43, А. Малышко, В. Лещенко
+  РљРѕРјРїСЊСЋС‚РµСЂРЅС‹Р№ РїСЂР°РєС‚РёРєСѓРј в„–1
+  Р¤Р†-43, Рђ. РњР°Р»С‹С€РєРѕ, Р’. Р›РµС‰РµРЅРєРѕ
  *****************************/
 
 package main;
@@ -11,17 +11,17 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 public class Stat {
-	static char[] alphabet = {'а', 'б', 'в', 'г', 'д', 'е', 'ж', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я'};
+	static char[] alphabet = {'Р°', 'Р±', 'РІ', 'Рі', 'Рґ', 'Рµ', 'Р¶', 'Р·', 'Рё', 'Р№', 'Рє', 'Р»', 'Рј', 'РЅ', 'Рѕ', 'Рї', 'СЂ', 'СЃ', 'С‚', 'Сѓ', 'С„', 'С…', 'С†', 'С‡', 'С€', 'С‰', 'СЉ', 'С‹', 'СЊ', 'СЌ', 'СЋ', 'СЏ'};
 	static Map<Character, Character> replace = new HashMap<Character, Character>() {{
-		put('ё', 'е');
+		put('С‘', 'Рµ');
 	}};
-	/*static char[] alphabet = {'а', 'б', 'в', 'г', 'д', 'е', 'ж', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', ' ', 'ы', 'ь', 'э', 'ю', 'я'};
+	/*static char[] alphabet = {'Р°', 'Р±', 'РІ', 'Рі', 'Рґ', 'Рµ', 'Р¶', 'Р·', 'Рё', 'Р№', 'Рє', 'Р»', 'Рј', 'РЅ', 'Рѕ', 'Рї', 'СЂ', 'СЃ', 'С‚', 'Сѓ', 'С„', 'С…', 'С†', 'С‡', 'С€', 'С‰', ' ', 'С‹', 'СЊ', 'СЌ', 'СЋ', 'СЏ'};
 	static Map<Character, Character> replace = new HashMap<Character, Character>() {{
-		put('ё', 'е');
-		put('ъ', 'ь');
+		put('С‘', 'Рµ');
+		put('СЉ', 'СЊ');
 	}};*/
 	
-	//shifts - корректировка подбора ключа Цезарей, поправка частотного анализа
+	//shifts - РєРѕСЂСЂРµРєС‚РёСЂРѕРІРєР° РїРѕРґР±РѕСЂР° РєР»СЋС‡Р° Р¦РµР·Р°СЂРµР№, РїРѕРїСЂР°РІРєР° С‡Р°СЃС‚РѕС‚РЅРѕРіРѕ Р°РЅР°Р»РёР·Р°
 	static int[] shifts = {0,4,0,1,1,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 	//static int[] shifts = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 	
@@ -29,10 +29,10 @@ public class Stat {
 		File src = new File("src\\main\\needsToBeFormated.txt");
 		File dst = new File("src\\main\\formatedArchmage.txt");
 		//dst.createNewFile();
-		//char[] alphabet = {'а', 'б', 'в', 'г', 'д', 'е', 'ж', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', ' ', 'ы', 'ь', 'э', 'ю', 'я'};
+		//char[] alphabet = {'Р°', 'Р±', 'РІ', 'Рі', 'Рґ', 'Рµ', 'Р¶', 'Р·', 'Рё', 'Р№', 'Рє', 'Р»', 'Рј', 'РЅ', 'Рѕ', 'Рї', 'СЂ', 'СЃ', 'С‚', 'Сѓ', 'С„', 'С…', 'С†', 'С‡', 'С€', 'С‰', ' ', 'С‹', 'СЊ', 'СЌ', 'СЋ', 'СЏ'};
 		Map<Character, Character> replace = new HashMap<Character, Character>();
-		replace.put('ё', 'е');
-		replace.put('ъ', 'ь');
+		replace.put('С‘', 'Рµ');
+		replace.put('СЉ', 'СЊ');
 		Stat.format(src, dst, alphabet, replace);
 		//dst.createNewFile();
 	}
@@ -63,10 +63,10 @@ public class Stat {
 	}
 	
 	static void showFrequencies() throws IOException {
-		/*char[] alphabet = {'а', 'б', 'в', 'г', 'д', 'е', 'ж', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', ' ', 'ы', 'ь', 'э', 'ю', 'я'};
+		/*char[] alphabet = {'Р°', 'Р±', 'РІ', 'Рі', 'Рґ', 'Рµ', 'Р¶', 'Р·', 'Рё', 'Р№', 'Рє', 'Р»', 'Рј', 'РЅ', 'Рѕ', 'Рї', 'СЂ', 'СЃ', 'С‚', 'Сѓ', 'С„', 'С…', 'С†', 'С‡', 'С€', 'С‰', ' ', 'С‹', 'СЊ', 'СЌ', 'СЋ', 'СЏ'};
 		Map<Character, Character> replace = new HashMap<Character, Character>();
-		replace.put('ё', 'е');
-		replace.put('ъ', 'ь');*/
+		replace.put('С‘', 'Рµ');
+		replace.put('СЉ', 'СЊ');*/
 		Stat.format(new File("src\\main\\needsToBeFormated.txt"), new File("src\\main\\formatedArchmage.txt"), alphabet, replace);
 		Map<Character, Integer> sChFreq = Stat.getSingleCharFrequencies(new File("src\\main\\formatedArchmage.txt"), alphabet);
 		sChFreq = Stat.sortByValue(sChFreq);
@@ -92,26 +92,26 @@ public class Stat {
 		}
 		BufferedReader br = new BufferedReader (new FileReader(src));
 		BufferedWriter bw = new BufferedWriter(new FileWriter(dst));
-		int readChar; // .read читает код символа
+		int readChar; // .read С‡РёС‚Р°РµС‚ РєРѕРґ СЃРёРјРІРѕР»Р°
 		char c;
 		int breakctr = 0;
 		boolean found, prevIsSpace = true;
 		while((readChar=br.read()) != -1) {
 			breakctr++;
 			if (breakctr > 10000000) {
-				//на случай бесконечного цикла
+				//РЅР° СЃР»СѓС‡Р°Р№ Р±РµСЃРєРѕРЅРµС‡РЅРѕРіРѕ С†РёРєР»Р°
 				System.out.println("\"while\" is too long");
 				break;
 			}
-			found = false; //для избежания излишнего поиска в алфавите, после нахождения нужной буквы прерываем поиск.
+			found = false; //РґР»СЏ РёР·Р±РµР¶Р°РЅРёСЏ РёР·Р»РёС€РЅРµРіРѕ РїРѕРёСЃРєР° РІ Р°Р»С„Р°РІРёС‚Рµ, РїРѕСЃР»Рµ РЅР°С…РѕР¶РґРµРЅРёСЏ РЅСѓР¶РЅРѕР№ Р±СѓРєРІС‹ РїСЂРµСЂС‹РІР°РµРј РїРѕРёСЃРє.
 			
-			c = Character.toLowerCase((char)readChar); //превращаем прочитанный код символа собственно в символ
+			c = Character.toLowerCase((char)readChar); //РїСЂРµРІСЂР°С‰Р°РµРј РїСЂРѕС‡РёС‚Р°РЅРЅС‹Р№ РєРѕРґ СЃРёРјРІРѕР»Р° СЃРѕР±СЃС‚РІРµРЅРЅРѕ РІ СЃРёРјРІРѕР»
 			
 			for(Entry<Character, Character> entry : replace.entrySet()) {
-				if(c == entry.getKey())  { // 33 буквы алфавита ужимаем в 32 путём замены "ё" на "е".
+				if(c == entry.getKey())  { // 33 Р±СѓРєРІС‹ Р°Р»С„Р°РІРёС‚Р° СѓР¶РёРјР°РµРј РІ 32 РїСѓС‚С‘Рј Р·Р°РјРµРЅС‹ "С‘" РЅР° "Рµ".
 					bw.write(entry.getValue());
 					prevIsSpace = false;
-					continue; // нашли "ё" - не надо перебирать алфавит.
+					continue; // РЅР°С€Р»Рё "С‘" - РЅРµ РЅР°РґРѕ РїРµСЂРµР±РёСЂР°С‚СЊ Р°Р»С„Р°РІРёС‚.
 				}
 			}
 			
@@ -171,7 +171,7 @@ public class Stat {
 		 String bi;
 		 for(int i=0; i<alphabet.length; i++) {
 			 for(int j=0; j<alphabet.length; j++) {
-				 //заполняем хэшмап всевозможными биграммами
+				 //Р·Р°РїРѕР»РЅСЏРµРј С…СЌС€РјР°Рї РІСЃРµРІРѕР·РјРѕР¶РЅС‹РјРё Р±РёРіСЂР°РјРјР°РјРё
 				 frequencies.put(Character.toString(alphabet[i]).concat(Character.toString(alphabet[j])), 0);
 			 }
 		 }
@@ -182,8 +182,8 @@ public class Stat {
 		 while((t=br.read()) != -1) {
 			 c2 = (char)t;
 			 bi=Character.toString(c1).concat(Character.toString(c2));
-			 if(overlay == true) frequencies.put(bi, frequencies.get(bi) + 1); //если без наложения, суём всё
-			 else if (ctr % 2 == 0) { //если "с", суём кажую вторую
+			 if(overlay == true) frequencies.put(bi, frequencies.get(bi) + 1); //РµСЃР»Рё Р±РµР· РЅР°Р»РѕР¶РµРЅРёСЏ, СЃСѓС‘Рј РІСЃС‘
+			 else if (ctr % 2 == 0) { //РµСЃР»Рё "СЃ", СЃСѓС‘Рј РєР°Р¶СѓСЋ РІС‚РѕСЂСѓСЋ
 				 frequencies.put(bi, frequencies.get(bi) + 1);
 			 }
 			 ctr++;
@@ -205,7 +205,7 @@ public class Stat {
 		//with overlay:
 		Map<String, Integer> OBFreqWoS = Stat.getBigramFrequencies(dst, alphabet, true);
 		Stat.alphabet[26] = ' ';
-		Stat.replace.put('ъ', 'ь');
+		Stat.replace.put('СЉ', 'СЊ');
 		Stat.format(src, dst, alphabet, replace);
 		//with spaces:
 		//without overlay:
@@ -220,8 +220,8 @@ public class Stat {
 		Stat.saveMap(OBFreqWoS, new File("src\\main\\bigram_frequencies\\NoSpacesOverlay.txt"));
 		Stat.saveMap(UBFreqS, new File("src\\main\\bigram_frequencies\\SpacesNOOverlay.txt"));
 		Stat.saveMap(OBFreqS, new File("src\\main\\bigram_frequencies\\SpacesOverlay.txt"));
-		Stat.alphabet[26] = 'ъ';
-		Stat.replace.remove('ъ');
+		Stat.alphabet[26] = 'СЉ';
+		Stat.replace.remove('СЉ');
 	}
 	
 	static void saveMap(Map<String, Integer> src, File dst) throws IOException {
@@ -262,7 +262,7 @@ public class Stat {
 	 }
 	
 	
-	static void rthSymbol(File src, File dst, int r, int shift) throws IOException { //shift - начальный сдвиг, льбрасываем первые shift символов
+	static void rthSymbol(File src, File dst, int r, int shift) throws IOException { //shift - РЅР°С‡Р°Р»СЊРЅС‹Р№ СЃРґРІРёРі, Р»СЊР±СЂР°СЃС‹РІР°РµРј РїРµСЂРІС‹Рµ shift СЃРёРјРІРѕР»РѕРІ
 		BufferedReader br = new BufferedReader(new FileReader(src));
 		//File dst = new File("src\\main\\rthSymbol.txt");
 		BufferedWriter bw = new BufferedWriter(new FileWriter(dst));
@@ -273,7 +273,7 @@ public class Stat {
 		 	if(ctr%r == 0 && ctr < 1000000) {
 		 		bw.write((char)t);
 		 	}
-		 	if(ctr > 1000000) System.out.println("too many operations while selectiong rth symbol");
+		 	if(ctr > 1000000) System.out.println("too many operations while selecting rth symbol");
 		}
 		br.close();
 		bw.close();
@@ -300,28 +300,28 @@ public class Stat {
 	}
 	
 	static void decodeCaesar(File src, File dst, Map<Character, Integer> langFreq, int which_letter) throws IOException {
-		//whichLetter - если самая часто встречаемая буква не подошла (whichLetter = 0 не подошло), выбираем следующую по частоте - whichletter = 1
-		//читаем из файла с текстом, зашифрованным Цезарем
+		//whichLetter - РµСЃР»Рё СЃР°РјР°СЏ С‡Р°СЃС‚Рѕ РІСЃС‚СЂРµС‡Р°РµРјР°СЏ Р±СѓРєРІР° РЅРµ РїРѕРґРѕС€Р»Р° (whichLetter = 0 РЅРµ РїРѕРґРѕС€Р»Рѕ), РІС‹Р±РёСЂР°РµРј СЃР»РµРґСѓСЋС‰СѓСЋ РїРѕ С‡Р°СЃС‚РѕС‚Рµ - whichletter = 1
+		//С‡РёС‚Р°РµРј РёР· С„Р°Р№Р»Р° СЃ С‚РµРєСЃС‚РѕРј, Р·Р°С€РёС„СЂРѕРІР°РЅРЅС‹Рј Р¦РµР·Р°СЂРµРј
 		BufferedReader br = new BufferedReader(new FileReader(src));
 		//File dst = new File("src\\main\\tempForCaesar.txt");
 		BufferedWriter bw = new BufferedWriter(new FileWriter(dst));
-		//тут - отсортированные по убыванию количества в большом текстовом файле буквы
+		//С‚СѓС‚ - РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅРЅС‹Рµ РїРѕ СѓР±С‹РІР°РЅРёСЋ РєРѕР»РёС‡РµСЃС‚РІР° РІ Р±РѕР»СЊС€РѕРј С‚РµРєСЃС‚РѕРІРѕРј С„Р°Р№Р»Рµ Р±СѓРєРІС‹
 		ArrayList<Character> langMostCommonLetters = new ArrayList<Character>(Stat.sortByValue(langFreq).keySet());
 		Map<Character, Integer> srcFreq = Stat.getSingleCharFrequencies(src, alphabet);
-		//тут - из файла с Цезарем
+		//С‚СѓС‚ - РёР· С„Р°Р№Р»Р° СЃ Р¦РµР·Р°СЂРµРј
 		ArrayList<Character> srcMostCommonLetters = new ArrayList<Character>(Stat.sortByValue(srcFreq).keySet());
 		char langMCL = langMostCommonLetters.get(0), srcMCL = srcMostCommonLetters.get(which_letter); //language most common (or prefered) letter, source file most common letter
 		//System.out.println("srcMCL = "+srcMCL);
 		int langMCLpos=-1, srcMCLpos=-1; //position in alphabet
-		//находим буквы в алфавите
+		//РЅР°С…РѕРґРёРј Р±СѓРєРІС‹ РІ Р°Р»С„Р°РІРёС‚Рµ
 		langMCLpos = Stat.posInAlph(langMCL);
 		srcMCLpos = Stat.posInAlph(srcMCL);
 		if(langMCLpos == -1 || srcMCLpos == -1) System.err.println("ERROR: CHARACTER NOT FOUND in decodeCaesar");
-		int key = mod32(srcMCLpos - langMCLpos); // ключ шифра Цезаря
+		int key = mod32(srcMCLpos - langMCLpos); // РєР»СЋС‡ С€РёС„СЂР° Р¦РµР·Р°СЂСЏ
 		System.out.println("key: " + alphabet[key] + "\t("+key+")");
 		int t;
 		while((t = br.read()) != -1) {
-			bw.write(alphabet[mod32(posInAlph((char)t) - key)]); // расшифрование
+			bw.write(alphabet[mod32(posInAlph((char)t) - key)]); // СЂР°СЃС€РёС„СЂРѕРІР°РЅРёРµ
 		}
 		br.close();
 		bw.close();
@@ -329,7 +329,7 @@ public class Stat {
 	}
 	
 	static int posInAlph(char c) {
-		for(int i=0; i<alphabet.length; i++) { //находим буквы в алфавите
+		for(int i=0; i<alphabet.length; i++) { //РЅР°С…РѕРґРёРј Р±СѓРєРІС‹ РІ Р°Р»С„Р°РІРёС‚Рµ
 			if(c == alphabet[i]) return i;
 		}
 		System.err.println("ERROR: CHARACTER NOT FOUND in alphabet (decodeCaesar)");
@@ -344,7 +344,7 @@ public class Stat {
 		int key_length = Stat.decideKeyLength(Stat.IOAforEachR(variant, alphabet), 0);
 		BufferedWriter bw = new BufferedWriter(new FileWriter(dst));
 		ArrayList<File> /*caesarsInSrc = new ArrayList<File>(),*/ decodedCaesars = new ArrayList<File>();
-		//корректировка цезарей
+		//РєРѕСЂСЂРµРєС‚РёСЂРѕРІРєР° С†РµР·Р°СЂРµР№
 		for(int i = 0; i < key_length; i++) {
 			System.out.print(i + ":\t");
 			File rthSymbol = new File("src\\main\\decode\\i"+i+".txt"); 
@@ -375,7 +375,7 @@ public class Stat {
 		//return res;
 	}
 	
-	//индексы соответствия для 
+	//РёРЅРґРµРєСЃС‹ СЃРѕРѕС‚РІРµС‚СЃС‚РІРёСЏ РґР»СЏ 
 	 static void encrypt(File src, File dst, String key) throws Exception {
 		 BufferedReader br = null;
 		 BufferedWriter bw = null;
@@ -390,7 +390,7 @@ public class Stat {
 		 System.out.println("\n-----------");
 		 System.out.println("Key length = " + key.length());
 		 int[] key_arr = new int[key.length()];
-		 //конвертация ключа в массив целых числе для сложения с ОТ
+		 //РєРѕРЅРІРµСЂС‚Р°С†РёСЏ РєР»СЋС‡Р° РІ РјР°СЃСЃРёРІ С†РµР»С‹С… С‡РёСЃР»Рµ РґР»СЏ СЃР»РѕР¶РµРЅРёСЏ СЃ РћРў
 		 try {
 			 key_arr = Stat.keyIntoIntArr(key, alphabet);
 		 }
@@ -402,9 +402,9 @@ public class Stat {
 		 }
 		 System.out.println();*/
 		 
-		 char c; // читаемый символ
-		 int index=0; //по идее не должен быть инициализирован, но не компилится :с
-		 int ic; //читаемый код символа
+		 char c; // С‡РёС‚Р°РµРјС‹Р№ СЃРёРјРІРѕР»
+		 int index=0; //РїРѕ РёРґРµРµ РЅРµ РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ РёРЅРёС†РёР°Р»РёР·РёСЂРѕРІР°РЅ, РЅРѕ РЅРµ РєРѕРјРїРёР»РёС‚СЃСЏ :СЃ
+		 int ic; //С‡РёС‚Р°РµРјС‹Р№ РєРѕРґ СЃРёРјРІРѕР»Р°
 		 boolean found_flag = false;
 		 for(int infctr=0; infctr<500000; infctr++) {
 			 try {
@@ -413,10 +413,10 @@ public class Stat {
 				 e.printStackTrace();
 				 break;
 			 }
-			 if(ic == -1) break; //конец текста
+			 if(ic == -1) break; //РєРѕРЅРµС† С‚РµРєСЃС‚Р°
 			 c = (char)ic;
 			 
-			 found_flag = false; //проверка, есть ли символ в алфавите
+			 found_flag = false; //РїСЂРѕРІРµСЂРєР°, РµСЃС‚СЊ Р»Рё СЃРёРјРІРѕР» РІ Р°Р»С„Р°РІРёС‚Рµ
 			 for(int i=0; i<alphabet.length; i++) {
 				 if(c == alphabet[i]) {
 					 index = i;
@@ -426,7 +426,7 @@ public class Stat {
 			 }
 			 if(found_flag == false)  throw new Exception("Errror: Read character not found in alphabet!");
 			 
-			 bw.write( alphabet[ (index + key_arr[infctr % key.length()]) % 32] ); //зашифрование
+			 bw.write( alphabet[ (index + key_arr[infctr % key.length()]) % 32] ); //Р·Р°С€РёС„СЂРѕРІР°РЅРёРµ
 			 System.out.print(alphabet[ (index + key_arr[infctr % key.length()]) % 32]);
 			 //if(infctr % 400 == 0) System.out.println();
 			 
@@ -489,7 +489,7 @@ public class Stat {
 	
 	 static void showAllIOA() throws Exception {
 		 File src = new File("src\\main\\allIOA\\src.txt");
-		 String[] keys = {"уж", "бык", "утка", "цапля", /*"чтозазверь",*/ "выхухляндия"};
+		 String[] keys = {"СѓР¶", "Р±С‹Рє", "СѓС‚РєР°", "С†Р°РїР»СЏ", /*"С‡С‚РѕР·Р°Р·РІРµСЂСЊ",*/ "РІС‹С…СѓС…Р»СЏРЅРґРёСЏ"};
 		 ArrayList<File> files = Stat.encryptSet(keys, src);
 		 Map<Integer, Integer> forPrint = Stat.getAllIOA(keys, files);
 		 Stat.printMap(forPrint);

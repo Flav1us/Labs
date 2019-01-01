@@ -6,30 +6,30 @@ import java.util.ArrayList;
 public class exe {
 
 	public static void main(String[] args) throws Exception {
-		//Третий параметр formatTextFile указывает на наличие пробела в алфавите. При false вместо него - твёрдый знак.
+		//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ formatTextFile пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅ false пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ.
 		Stat.formatTextFile(Stat.myTextPathSrc,Stat.myTextPathDst, false);
 		Stat.getEntropy();
 		Stat.printResults();
 		//Stat.formatTextFile(Stat.myTextPathSrc,Stat.myTextPathDst, true);
-		Stat.getEntropy();
+		/*Stat.getEntropy();
 		Stat.printResults();
 		ArrayList<String> keys = new ArrayList<String>();
-		keys.add("уж");
-		keys.add("бык");
-		keys.add("утка");
-		keys.add("цапля");
-		keys.add("аэточтозазверь");
+		keys.add("пїЅпїЅ");
+		keys.add("пїЅпїЅпїЅ");
+		keys.add("пїЅпїЅпїЅпїЅ");
+		keys.add("пїЅпїЅпїЅпїЅпїЅ");
+		keys.add("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 		for(String key : keys) {
 			Stat.encrypt(Stat.textToEncrypt, Stat.encryptedText, key);
-			System.out.format("%n%.6f - индекс соответствия", Stat.getIndexOfAccordance(Stat.encryptedText));
-		}
+			System.out.format("%n%.6f - пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ", Stat.getIndexOfAccordance(Stat.encryptedText));
+		}*/
 		System.out.println("\n---------------\n");
 		
 		//System.out.println(Stat.alph.length);
 		/*System.out.println("\ndone");
-		String fileToDecrypt = "C:\\main\\Programs\\JavaWorkspace\\SymCrypt_1\\src\\main\\textToDecrypt.txt"; //из variants
-		String tempDecryptedFile = "C:\\main\\Programs\\JavaWorkspace\\SymCrypt_1\\src\\main\\tempDecryptedFile.txt"; //тут каждая r-я буква в цикле от 1 до 30
-		System.out.format("%n%.6f - индекс соответствия файла варианта%n", Stat.getIndexOfAccordance(fileToDecrypt));
+		String fileToDecrypt = "C:\\main\\Programs\\JavaWorkspace\\SymCrypt_1\\src\\main\\textToDecrypt.txt"; //пїЅпїЅ variants
+		String tempDecryptedFile = "C:\\main\\Programs\\JavaWorkspace\\SymCrypt_1\\src\\main\\tempDecryptedFile.txt"; //пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ r-пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ 1 пїЅпїЅ 30
+		System.out.format("%n%.6f - пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ%n", Stat.getIndexOfAccordance(fileToDecrypt));
 		Stat.decrypt(fileToDecrypt, tempDecryptedFile);*/
 		//System.out.println(Stat.getIndexOfAccordance(tempDecryptedFile));
 		

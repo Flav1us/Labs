@@ -6,16 +6,16 @@ import java.util.*;
 
 public class exe{
 /*
-*находимдлинуключа,сравниваяиндексысоответствиявыборокизтекстачерез/предполагаемаядлинаключа/символов.
-*наосновебольшоготекстовогофайлаузнаемчащевсеговстречающуюсябуквувязыке
+*пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ,пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ/пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ/пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
+*пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 *
 */
 	public static void main(String[] args) throws Exception {
-		char[] alphabet={'а','б','в','г','д','е','ж','з','и','й','к','л','м','н','о','п','р','с','т','у','ф','х','ц','ч','ш','щ','ъ','ы','ь','э','ю','я'};
+		char[] alphabet = {'Р°', 'Р±', 'РІ', 'Рі', 'Рґ', 'Рµ', 'Р¶', 'Р·', 'Рё', 'Р№', 'Рє', 'Р»', 'Рј', 'РЅ', 'Рѕ', 'Рї', 'СЂ', 'СЃ', 'С‚', 'Сѓ', 'С„', 'С…', 'С†', 'С‡', 'С€', 'С‰', 'СЉ', 'С‹', 'СЊ', 'СЌ', 'СЋ', 'СЏ'};
 		Map<Character,Character>replace= new HashMap <Character, Character>();
-		replace.put('ё','е');
+		replace.put('С‘','Рµ');
 		
-		//поиск ключа Виженера
+		//пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		/*Map<Integer,Double>IOA=Stat.IOAforEachR(new File("src\\main\\variant.txt"),alphabet);
 		Stat.printMap(IOA);
 		IOA=Stat.sortByValue(IOA);
@@ -23,7 +23,7 @@ public class exe{
 		Stat.printMap(IOA);
 		System.out.println(Stat.decideKeyLength(Stat.IOAforEachR(new File("src\\main\\variant.txt"),alphabet),0));*/
 		
-		//тест Цезаря
+		//пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 		//Stat.format(new File("src\\main\\needsToBeFormated.txt"), new File("src\\main\\formatedArchmage.txt"), alphabet, replace);
 		//Stat.format(new File("src\\main\\temp\\caesarTestBasic.txt"), new File("src\\main\\temp\\caesarTestFormated.txt"), alphabet, replace);
 		//Stat.decodeCaesar(new File("src\\main\\temp\\caesarTestformated.txt"), new File("src\\main\\temp\\caesarTestDecoded.txt"), Stat.getSingleCharFrequencies(new File("src\\main\\formatedArchmage.txt"), alphabet), 0);

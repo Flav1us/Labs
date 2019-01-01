@@ -4,17 +4,17 @@ import java.io.*;
 import java.util.*;
 
 public class Stat {
-	//Архимаг в исходном варианте
-	static final String myTextPathSrc = "C:\\main\\Programs\\JavaWorkspace\\SymCrypt_1\\src\\main\\mytextOriginal.txt";
-	//отформатированный
-	static final String myTextPathDst = "C:\\main\\Programs\\JavaWorkspace\\SymCrypt_1\\src\\main\\mytextFormated.txt";
-	//для кодирования Виженером
-	static final String textToEncrypt = "C:\\main\\Programs\\JavaWorkspace\\SymCrypt_1\\src\\main\\textToEncrypt.txt";
-	static final String encryptedText = "C:\\main\\Programs\\JavaWorkspace\\SymCrypt_1\\src\\main\\encryptedText.txt";
+	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	static final String myTextPathSrc = "C:\\main\\prog\\Git\\labs\\old projects\\SymCrypt_1\\src\\main\\mytextOriginal.txt";
+	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	static final String myTextPathDst = "C:\\main\\prog\\Git\\labs\\old projects\\SymCrypt_1\\src\\main\\mytextFormated.txt";
+	//пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	static final String textToEncrypt = "C:\\main\\prog\\Git\\labs\\old projects\\SymCrypt_1\\src\\main\\textToEncrypt.txt";
+	static final String encryptedText = "C:\\main\\prog\\Git\\labs\\old projects\\SymCrypt_1\\src\\main\\encryptedText.txt";
 	//basic text length: 1117718 symbols
-	static char[] alph = {'а', 'б', 'в', 'г', 'д', 'е', 'ж', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я'};
-	static char oddChar1 = 'ё', replacingChar1 = alph[5];
-	static char oddChar2 = 'ъ', replacingChar2 = alph[28];
+	static char[] alph = {'пїЅ', 'пїЅ', 'пїЅ', 'пїЅ', 'пїЅ', 'пїЅ', 'пїЅ', 'пїЅ', 'пїЅ', 'пїЅ', 'пїЅ', 'пїЅ', 'пїЅ', 'пїЅ', 'пїЅ', 'пїЅ', 'пїЅ', 'пїЅ', 'пїЅ', 'пїЅ', 'пїЅ', 'пїЅ', 'пїЅ', 'пїЅ', 'пїЅ', 'пїЅ', 'пїЅ', 'пїЅ', 'пїЅ', 'пїЅ', 'пїЅ', 'пїЅ'};
+	static char oddChar1 = 'пїЅ', replacingChar1 = alph[5];
+	static char oddChar2 = 'пїЅ', replacingChar2 = alph[28];
 	static Map<Character, Integer> singleCharFreq = new HashMap<Character, Integer>();
 	static Map<String, Integer> bigramFreq = new HashMap<String, Integer>();
 	static Map<String, Integer> uBigramFreq = new HashMap<String, Integer>();
@@ -23,35 +23,35 @@ public class Stat {
 	static Map<String, Double> htable3 = new HashMap<String, Double>();
 	static double h1=0, h2=0, h3=0;
 	
-	static final double h_inf = 1.811; //энтропия из coolPinkProgram для 30 символов (h30: 1.455 < h30 < 2.167)
+	static final double h_inf = 1.811; //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ coolPinkProgram пїЅпїЅпїЅ 30 пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (h30: 1.455 < h30 < 2.167)
 	
 	
 	 static void formatTextFile(String src, String dst, boolean withSpaces) throws IOException {
 		 if (withSpaces) Stat.alph[26] = ' ';
-		 else Stat.alph[26] = 'ъ';
+		 else Stat.alph[26] = 'пїЅ';
 		 
 		BufferedReader br = new BufferedReader (new FileReader(new File(src)));
 		BufferedWriter bw = new BufferedWriter(new FileWriter(new File(dst)));
 		
-		int readChar; // .read читает код символа
+		int readChar; // .read пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		char c;
 		int breakctr = 0;
 		boolean found, prevIsSpace = false;
 		while((readChar=br.read()) != -1) {
 			breakctr++;
 			if (breakctr > 10000000) {
-				//на случай бесконечного цикла
+				//пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 				System.out.println("\"while\" is too long");
 				break;
 			}
-			found = false; //для избежания излишнего поиска в алфавите, после нахождения нужной буквы прерываем поиск.
-			c = Character.toLowerCase((char)readChar); //превращаем прочитанный код символа собственно в символ
-			if(c == oddChar1)  { // 33 буквы алфавита ужимаем в 32 путём замены "ё" на "е".
+			found = false; //пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ.
+			c = Character.toLowerCase((char)readChar); //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+			if(c == oddChar1)  { // 33 пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ 32 пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ "пїЅ" пїЅпїЅ "пїЅ".
 				bw.write(replacingChar1);
 				prevIsSpace = false;
-				continue; // нашли "ё" - не надо перебирать алфавит.
+				continue; // пїЅпїЅпїЅпїЅпїЅ "пїЅ" - пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
 			}
-			else if(c == oddChar2 && withSpaces) { //во втором режиме заменяем "ъ" на "ь", чтобы освободить место под пробел  алфавите
+			else if(c == oddChar2 && withSpaces) { //пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ "пїЅ" пїЅпїЅ "пїЅ", пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ  пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 				bw.write(replacingChar2);
 				prevIsSpace = false;
 				continue;
@@ -82,7 +82,7 @@ public class Stat {
 		 }
 		 for(int i=0; i<Stat.alph.length; i++) {
 			 for(int j=0; j<Stat.alph.length; j++) {
-				 //заполняем хэшмап всевозможными биграммами
+				 //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 				 Stat.bigramFreq.put(Character.toString(Stat.alph[i]).concat(Character.toString(Stat.alph[j])), 0);
 				 Stat.uBigramFreq.put(Character.toString(Stat.alph[i]).concat(Character.toString(Stat.alph[j])), 0);
 			 }
@@ -115,8 +115,8 @@ public class Stat {
 			    System.out.println("Key:  " + entry.getKey() + "  Value: "  + entry.getValue());
 		 }*/
 		 System.out.println("\n------------\n");
-		 //System.out.println("h1 = " + h1 + "\t- один символ\nh2 = " + h2 + "\t- два с пересечением\nh3 = " + h3 + "\t- два без пересечения");
-		 System.out.format("h1 = %.5f\t- один символ%nh2 = %.5f\t- два с пересечением%nh3 = %.5f\t- два без пересечения%nR  = %.5f\t- избыточность", h1, h2, h3, getRedundancy(h1));
+		 //System.out.println("h1 = " + h1 + "\t- пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ\nh2 = " + h2 + "\t- пїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ\nh3 = " + h3 + "\t- пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+		 System.out.format("h1 = %.5f\t- пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ%nh2 = %.5f\t- пїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ%nh3 = %.5f\t- пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ%nR  = %.5f\t- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ", h1, h2, h3, getRedundancy(h1));
 	 }
 	 
 	 static void getEntropy() {
@@ -133,7 +133,7 @@ public class Stat {
 			br.close();
 			double p;
 			
-			//энтропия одного символа
+			//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 			for(Map.Entry<Character, Integer> entry : Stat.singleCharFreq.entrySet()) {
 				if(entry.getValue() > 0) {
 					p = (double)entry.getValue()/(double)totalCharacters;
@@ -146,7 +146,7 @@ public class Stat {
 				}
 			}
 			
-			//энт. двух с пересечением
+			//пїЅпїЅпїЅ. пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 			for(Map.Entry<String, Integer> entry : Stat.bigramFreq.entrySet()) {
 				if(entry.getValue() > 0) {
 					p = (double)entry.getValue()/(double)totalBigrams;
@@ -157,7 +157,7 @@ public class Stat {
 			}
 			Stat.h2 /= 2;
 			
-			//двух без пересечения
+			//пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 			for(Map.Entry<String, Integer> entry : Stat.uBigramFreq.entrySet()) {
 				if(entry.getValue() > 0) {
 					p = (double)entry.getValue()/(double)(totalBigrams/2);
@@ -197,7 +197,7 @@ public class Stat {
 		 System.out.println("\n-----------");
 		 System.out.println("Key length = " + key.length());
 		 int[] key_arr = new int[key.length()];
-		 //конвертация ключа в массив целых числе для сложения с ОТ
+		 //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅ
 		 try {
 			 key_arr = Stat.keyIntoIntArr(key);
 		 }
@@ -209,9 +209,9 @@ public class Stat {
 		 }
 		 System.out.println();*/
 		 
-		 char c; // читаемый символ
-		 int index=0; //по идее не должен быть инициализирован, но не компилится :с
-		 int ic; //читаемый код символа
+		 char c; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+		 int index=0; //пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ :пїЅ
+		 int ic; //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		 boolean found_flag = false;
 		 for(int infctr=0; infctr<500000; infctr++) {
 			 try {
@@ -220,10 +220,10 @@ public class Stat {
 				 e.printStackTrace();
 				 break;
 			 }
-			 if(ic == -1) break; //конец текста
+			 if(ic == -1) break; //пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 			 c = (char)ic;
 			 
-			 found_flag = false; //проверка, есть ли символ в алфавите
+			 found_flag = false; //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 			 for(int i=0; i<Stat.alph.length; i++) {
 				 if(c == Stat.alph[i]) {
 					 index = i;
@@ -233,7 +233,7 @@ public class Stat {
 			 }
 			 if(found_flag == false)  throw new Exception("Errror: Read character not found in alphabet!");
 			 
-			 bw.write( Stat.alph[ (index + key_arr[infctr % key.length()]) % 32] ); //зашифрование
+			 bw.write( Stat.alph[ (index + key_arr[infctr % key.length()]) % 32] ); //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 			 System.out.print(Stat.alph[ (index + key_arr[infctr % key.length()]) % 32]);
 			 //if(infctr % 400 == 0) System.out.println();
 			 
