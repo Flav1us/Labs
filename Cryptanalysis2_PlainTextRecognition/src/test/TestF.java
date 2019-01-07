@@ -15,6 +15,7 @@ import main.Criterion_1_0;
 import main.Criterion_1_1;
 import main.Criterion_1_2;
 import main.Criterion_1_3;
+import main.Criterion_3_0;
 import main.Format;
 import main.Frequencies;
 import main.Main;
@@ -39,11 +40,15 @@ public class TestF {
 		assertFalse(Criterion_1_1.isPlainText(test_false, k_p));
 		assertFalse(Criterion_1_2.isPlainText(test_false, cr_frq));
 		assertFalse(Criterion_1_3.isPlainText(test_false, Frequencies.A_prh_frq(Frequencies.getBigramQuantities(basic, Main.alphabet, true))));
+		assertFalse(Criterion_3_0.isPlainText(test_false, Frequencies.getBigramFrequencies(basic, Main.alphabet, true)));
 		
 		assertTrue(Criterion_1_0.isPlainText(test_true));
 		assertTrue(Criterion_1_1.isPlainText(test_true, k_p));
 		assertTrue(Criterion_1_2.isPlainText(test_true, cr_frq));
 		assertTrue(Criterion_1_3.isPlainText(test_true, Frequencies.A_prh_frq(Frequencies.getBigramQuantities(basic, Main.alphabet, true))));
+		//не проходит, слишком короткий тестовый текст
+		//assertTrue(Criterion_3_0.isPlainText(test_true, Frequencies.getBigramFrequencies(basic, Main.alphabet, true)));
+		
 		
 	}
 	

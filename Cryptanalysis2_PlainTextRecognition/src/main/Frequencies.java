@@ -95,4 +95,12 @@ public class Frequencies {
 		return frq;
 	}
 	
+	public static double specificEntropy(Map<String, Double> frequencies) {
+		int len = frequencies.keySet().stream().findFirst().get().length();
+		for(String s : frequencies.keySet()) assert(s.length() == len);
+		//frequencies.values().stream().filter(i -> !i.equals(0.0)).mapToDouble(i -> -i*(Math.log10(i)/Math.log10(2))).forEach(System.out::println);
+		double specific_entropy =  frequencies.values().stream().filter(i -> i > 0.0000000001).mapToDouble(i -> -i*(Math.log10(i)/Math.log10(2))).sum() / len;
+		return specific_entropy;
+	}
+	
 }
