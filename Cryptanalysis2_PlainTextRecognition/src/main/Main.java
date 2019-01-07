@@ -34,8 +34,6 @@ public class Main {
 		System.out.println("prohibited:");
 		for(String bi : A_prh) System.out.print(bi + "\t");
 		System.out.println();
-		
-
 
 		System.out.println("time taken: " + (System.currentTimeMillis() - time0) + " ms");
 	}
