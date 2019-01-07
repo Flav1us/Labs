@@ -31,14 +31,14 @@ public class Frequencies {
 	}
 	
 	
-	public static Map<String, Integer> getBigramFrequencies(File src, char[] alphabet, boolean overlay) throws IOException {
-		 Map<String, Integer> frequencies = new HashMap<String, Integer>();
+	public static Map<String, Integer> getBigramQuantities(File src, char[] alphabet, boolean overlay) throws IOException {
+		 Map<String, Integer> quantities = new HashMap<String, Integer>();
 		 char c1, c2;
 		 String bi;
 		 for(int i=0; i<alphabet.length; i++) {
 			 for(int j=0; j<alphabet.length; j++) {
 				 //заполняем хэшмап всевозможными биграммами
-				 frequencies.put(Character.toString(alphabet[i]).concat(Character.toString(alphabet[j])), 0);
+				 quantities.put(Character.toString(alphabet[i]).concat(Character.toString(alphabet[j])), 0);
 			 }
 		 }
 		 BufferedReader br = new BufferedReader (new FileReader(src));
@@ -49,15 +49,30 @@ public class Frequencies {
 			 c2 = (char)t;
 			 bi=Character.toString(c1).concat(Character.toString(c2));
 			 //System.out.println(bi);
-			 if(overlay == true) frequencies.put(bi, frequencies.get(bi) + 1); //если без наложения, суём всё
+			 /*try {*/
+			 if(overlay == true) quantities.put(bi, quantities.get(bi) + 1); //если без наложения, суём всё
+			 
 			 else if (ctr % 2 == 0) { //если "с", суём кажую вторую
-				 frequencies.put(bi, frequencies.get(bi) + 1);
+				 quantities.put(bi, quantities.get(bi) + 1);
 			 }
+			 /*} catch (NullPointerException e) {
+				 System.out.println("unknown bigram: \"" + bi + "\"");
+			 }*/
 			 ctr++;
 			 c1 = c2;
 		 }
 		 br.close();
-		 return frequencies;
+		 return quantities;
+	}
+	
+	public static Map<String, Double> getBigramFrequencies(File src, char[] alphabet, boolean overlay) throws IOException {
+		Map<String, Integer> biq = Frequencies.getBigramQuantities(src, alphabet, overlay);
+		long sum = biq.values().stream().mapToInt(i -> i.intValue()).sum();
+		Map<String, Double> bifr = new HashMap<>();
+		for(Map.Entry<String, Integer> e : biq.entrySet()) {
+			bifr.put(e.getKey(), (double)e.getValue()/sum);
+		}
+		return bifr;
 	}
 	
 	public static List<String> getProhibitedBigrams(Map<String, Integer> bifreq) {
@@ -66,6 +81,18 @@ public class Frequencies {
 				.map(x -> x.getKey())
 				.collect(Collectors.toList());
 		return A_prh;
+	}
+	
+	public static Map<String, Double> A_prh_frq(Map<String, Integer> bifreq) {
+		List<String> A_prh = getProhibitedBigrams(bifreq);
+		Map<String, Double> frq = new HashMap<>();
+		long sum = bifreq.values().stream().mapToInt(i -> i.intValue()).sum();
+		for(Map.Entry<String, Integer> e : bifreq.entrySet()) {
+			if(A_prh.contains(e.getKey())) {
+				frq.put(e.getKey(), (double)e.getValue()/sum);
+			}
+		}
+		return frq;
 	}
 	
 }

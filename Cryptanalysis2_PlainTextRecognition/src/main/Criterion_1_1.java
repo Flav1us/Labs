@@ -10,15 +10,15 @@ public class Criterion_1_1 {
 		File dst = new File("resources\\test_formated.txt");
 		Format.format(src, dst, Main.alphabet, Main.replace);
 		boolean isPlainText = true;
-		Map<String, Integer> plt_bifreq = Frequencies.getBigramFrequencies(Main.formated, Main.alphabet, true);
+		Map<String, Integer> plt_bifreq = Frequencies.getBigramQuantities(Main.formated, Main.alphabet, true);
 		List<String> A_prh = Frequencies.getProhibitedBigrams(plt_bifreq); //Main.src
-		Map<String, Integer> bifreq = Frequencies.getBigramFrequencies(dst, Main.alphabet, true); //src
+		Map<String, Integer> bifreq = Frequencies.getBigramQuantities(dst, Main.alphabet, true); //src
 		long prohibitedBigramClasses = bifreq.entrySet().stream()
 			.filter(x -> x.getValue() != 0)
 			.filter(x -> A_prh.contains(x.getKey()))
 			.count();
 		if(prohibitedBigramClasses >= k_p) {
-			System.out.println("prohibitedBigramClasses: " + prohibitedBigramClasses);
+			//System.out.println("prohibitedBigramClasses: " + prohibitedBigramClasses);
 			isPlainText = false;
 		}
 		return isPlainText;
