@@ -80,6 +80,7 @@ public class Frequencies {
 				.filter(bi_entry -> bi_entry.getValue() == 0)
 				.map(x -> x.getKey())
 				.collect(Collectors.toList());
+		//A_prh.stream().forEach(System.out::println);
 		return A_prh;
 	}
 	

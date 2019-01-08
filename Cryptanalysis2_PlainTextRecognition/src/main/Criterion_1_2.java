@@ -6,14 +6,20 @@ import java.util.Map;
 import java.util.Optional;
 
 public class Criterion_1_2 {
-	public static boolean isPlainText(File src, Map<String, Double> critical_frequencies) throws IOException {
-		File dst = new File("resources\\test_formated.txt");
-		Format.format(src, dst, Main.alphabet, Main.replace);
+	
+	Map<String, Double> A_prh_frq;
+	
+	public Criterion_1_2(File src_learn) throws IOException {
+		Map<String, Integer> bifreq = Frequencies.getBigramQuantities(src_learn, Main.alphabet, true);
+		A_prh_frq = Frequencies.A_prh_frq(bifreq);
+	}
+	
+	public boolean isPlainText(File src) throws IOException {
 		boolean isPlainText = true;
-		Map<String, Double> bigram_frequencies = Frequencies.getBigramFrequencies(dst, Main.alphabet, true);
+		Map<String, Double> bigram_frequencies = Frequencies.getBigramFrequencies(src, Main.alphabet, true);
 		Optional<Map.Entry<String, Double>> t = bigram_frequencies.entrySet().stream()
-			.filter(i -> critical_frequencies.containsKey(i.getKey()))
-			.filter(i -> critical_frequencies.get(i.getKey()) < i.getValue())
+			.filter(i -> A_prh_frq.containsKey(i.getKey()))
+			.filter(i -> A_prh_frq.get(i.getKey()) < i.getValue())
 			.findFirst();
 		if(t.isPresent()) {
 			isPlainText = false;

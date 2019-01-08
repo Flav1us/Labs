@@ -6,8 +6,15 @@ import java.util.List;
 import java.util.Map;
 
 public class Criterion_1_0 {
-	public static boolean isPlainText(File src) throws IOException {
-		return Criterion_1_1.isPlainText(src, 1);
+	
+	Criterion_1_1 cr;
+	
+	public Criterion_1_0(File src_learn) throws IOException {
+		cr = new Criterion_1_1(src_learn);
+	}
+	
+	public boolean isPlainText(File src) throws IOException {
+		return cr.isPlainText(src, 1);
 	}
 	/*public static boolean isPlainText(File src) throws IOException {
 		File dst = new File("resources\\test_formated.txt");
