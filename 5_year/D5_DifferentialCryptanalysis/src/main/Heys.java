@@ -21,7 +21,7 @@ public class Heys {
 		if(key.length != 7) System.out.println("key length might be wrong");
 		char res = m;
 		for(int i = 0; i < 6; i++ ) {
-			res = round(m, key[i]);
+			res = round(res, key[i]);
 		}
 		res ^= key[6];
 		return res;
