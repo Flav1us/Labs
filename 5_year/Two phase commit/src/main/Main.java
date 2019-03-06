@@ -14,19 +14,28 @@ public class Main {
 		// TODO Auto-generated constructor stub
 	}
 
-	public static void main(String[] args) throws SQLException, ClassNotFoundException {
+	public static void main(String[] args) throws SQLException {
 		TwoPC twopc = new TwoPC();
 		Connection c1 = twopc.getConnection("db1_fly");
 		Connection c2 = twopc.getConnection("db2_hotel");
-		c1.setAutoCommit(false);
-		c2.setAutoCommit(false);
 		
-		String sql = "BEGIN;"
-				+ "update fly_booking set name='anton' where name='ton';"
+		String sql1 = "BEGIN;"
+				+ "update fly_booking set name='Anton' where name='anton';"
+				+ "PREPARE TRANSACTION 'updname';";
+
+		/*String sql2 = "BEGIN;"
+				+ "update hotel_booking set name='anton' where name='ton';"
 				+ "PREPARE TRANSACTION 'updname';"
-				+ "COMMIT PREPARED 'updname';";
+				+ "COMMIT PREPARED 'updname';";*/
 		
-		c1.createStatement().execute(sql );
+		Statement st = c1.createStatement();
+		st.executeUpdate(sql1);
+		st.executeUpdate("COMMIT PREPARED 'updname'");
+		
+
+		//c2.createStatement().execute(sql2);
+		c1.close();
+		c2.close();	
 	}
 
 
@@ -46,6 +55,7 @@ public class Main {
 				System.out.print(rs.getString(i) + "\t");
 			} System.out.println();
 		}
+		conn_fly.close();
 	}
 
 	private static void createTables(Connection conn1, Connection conn2) throws SQLException {
