@@ -18,8 +18,15 @@ public class Main {
 		TwoPC twopc = new TwoPC();
 		Connection c1 = twopc.getConnection("db1_fly");
 		Connection c2 = twopc.getConnection("db2_hotel");
-		
-		String sql1 = "BEGIN;"
+		/*
+		 * prepare to db1
+		 * prepare to db2
+		 * check db1 prepared
+		 * check db2 prepared
+		 * if both prepared, commit both
+		 * else rollback both
+		 */
+		String prepare_sql = "BEGIN;"
 				+ "update fly_booking set name='Anton' where name='anton';"
 				+ "PREPARE TRANSACTION 'updname';";
 
@@ -29,8 +36,17 @@ public class Main {
 				+ "COMMIT PREPARED 'updname';";*/
 		
 		Statement st = c1.createStatement();
-		st.executeUpdate(sql1);
-		st.executeUpdate("COMMIT PREPARED 'updname'");
+		st.executeUpdate(prepare_sql);
+		st.executeQuery("select * from pg_prepared_xacts where gid='updname'");
+		if(st.getResultSet().next()) {
+			System.out.println("commit");
+			st.executeUpdate("COMMIT PREPARED 'updname'");
+		}
+		else {
+			System.out.println("rollback");
+			st.executeUpdate("ROLLBACK PREPARED 'updname'");
+		}
+		st.close();
 		
 
 		//c2.createStatement().execute(sql2);
@@ -46,6 +62,11 @@ public class Main {
 		String query = "select * from fly_booking";
 		ResultSet rs = conn_fly.createStatement().executeQuery(query );
 		
+		printResultSet(rs);
+		conn_fly.close();
+	}
+
+	private static void printResultSet(ResultSet rs) throws SQLException {
 		for(int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
 			System.out.print(rs.getMetaData().getColumnLabel(i) + "\t");
 		} System.out.println();
@@ -55,7 +76,6 @@ public class Main {
 				System.out.print(rs.getString(i) + "\t");
 			} System.out.println();
 		}
-		conn_fly.close();
 	}
 
 	private static void createTables(Connection conn1, Connection conn2) throws SQLException {
