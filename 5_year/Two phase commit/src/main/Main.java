@@ -15,9 +15,9 @@ public class Main {
 	}
 
 	public static void main(String[] args) throws SQLException {
+		//testConnection();
 		TwoPC twopc = new TwoPC();
-		Connection c1 = twopc.getConnection("db1_fly");
-		Connection c2 = twopc.getConnection("db2_hotel");
+		twopc.create_trip("Tonn", "newfly3", "Kyiv", "Minsk", "2019-03-09", "myhotel",  "2019-03-11");
 		/*
 		 * prepare to db1
 		 * prepare to db2
@@ -26,32 +26,7 @@ public class Main {
 		 * if both prepared, commit both
 		 * else rollback both
 		 */
-		String prepare_sql = "BEGIN;"
-				+ "update fly_booking set name='Anton' where name='anton';"
-				+ "PREPARE TRANSACTION 'updname';";
-
-		/*String sql2 = "BEGIN;"
-				+ "update hotel_booking set name='anton' where name='ton';"
-				+ "PREPARE TRANSACTION 'updname';"
-				+ "COMMIT PREPARED 'updname';";*/
 		
-		Statement st = c1.createStatement();
-		st.executeUpdate(prepare_sql);
-		st.executeQuery("select * from pg_prepared_xacts where gid='updname'");
-		if(st.getResultSet().next()) {
-			System.out.println("commit");
-			st.executeUpdate("COMMIT PREPARED 'updname'");
-		}
-		else {
-			System.out.println("rollback");
-			st.executeUpdate("ROLLBACK PREPARED 'updname'");
-		}
-		st.close();
-		
-
-		//c2.createStatement().execute(sql2);
-		c1.close();
-		c2.close();	
 	}
 
 
