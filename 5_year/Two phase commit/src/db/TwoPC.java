@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class TwoPC {
+public class TwoPC { //one class instance for a single commit
 	
 	static String username = "postgres";
 	static String password = "password";
@@ -18,8 +18,9 @@ public class TwoPC {
 	Connection c1 = getConnection("db1_fly");
 	Connection c2 = getConnection("db2_hotel");
 
-	public boolean create_trip(String name, String flight_number, String from, String to, String arrival_date,
-			String hotel, String departure_date) throws SQLException {
+	//throws exception if it cannot be handled: connection establishment failure, create statement failure etc.
+	public boolean create_trip(String name, String flight_number, String from, String to,
+			String arrival_date, String hotel, String departure_date) throws SQLException, InterruptedException {
 
 		String prepare_fly = "BEGIN;"
 				+ "insert into fly_booking(name, fly_number, fromm, toooo, date) "
@@ -36,25 +37,55 @@ public class TwoPC {
 		Statement st1 = c1.createStatement();
 		Statement st2 = c2.createStatement();
 
+		//voting
+		
+		boolean global_commit = true;
+		
 		try {
 			st1.executeUpdate(prepare_fly);	
 		} catch (SQLException e) {
-			st1.executeUpdate("ROLLBACK PREPARED '" + fly_trans_name + "';");
 			e.printStackTrace();
-			return false;
+			global_commit = false;
 		}
 		
 		try {
 			st2.executeUpdate(prepare_hotel);	
 		} catch (SQLException e) {
-			st1.executeUpdate("ROLLBACK PREPARED '" + fly_trans_name + "';");
-			st2.executeUpdate("ROLLBACK PREPARED '" + hotel_trans_name + "';");
 			e.printStackTrace();
-			return false;
+			global_commit = false;
 		}
 		
-		st1.executeQuery("select * from pg_prepared_xacts where gid='insert_fly'");
-		st2.executeQuery("select * from pg_prepared_xacts where gid='insert_hotel'");
+		if(global_commit) {
+			while(true) { // TC should wait until node 'resurrects'
+				try {
+					st1.executeUpdate("COMMIT PREPARED '" + fly_trans_name + "';");
+					break;
+				} catch(SQLException e) {
+					System.out.println("commit fly failed");
+					Thread.sleep(1000);
+					continue;
+				}
+			}
+			//throw new RuntimeException("Transaction Coordinator Failure");
+			while(true) {
+				try {
+					st2.executeUpdate("COMMIT PREPARED '" + hotel_trans_name + "';");
+					break;
+				} catch(SQLException e) {
+					System.out.println("commit hotel failed");
+					Thread.sleep(1000);
+					continue;
+				}
+			}
+		}
+		else {
+			st1.executeUpdate("ROLLBACK PREPARED '" + fly_trans_name + "';");
+			st2.executeUpdate("ROLLBACK PREPARED '" + hotel_trans_name + "';");
+		}
+		
+		//not sure if its really needed
+		/*st1.executeQuery("select * from pg_prepared_xacts where gid='"+fly_trans_name+"'");
+		st2.executeQuery("select * from pg_prepared_xacts where gid='"+hotel_trans_name+"'");
 		
 		if (st1.getResultSet().next() && st2.getResultSet().next()) {
 			try {
@@ -65,14 +96,16 @@ public class TwoPC {
 				e.printStackTrace();
 			}
 		}
-		else {
+		else { //prepare transaction failed: no entry id db's table of prepared transaction
 			System.out.println("rollback");
-			st1.executeUpdate("ROLLBACK PREPARED 'insert_fly'");
-			st1.executeUpdate("ROLLBACK PREPARED 'insert_hotel'");
-		}
-		c1.close();
+			st1.executeUpdate("ROLLBACK PREPARED '" + fly_trans_name + "'");
+			st1.executeUpdate("ROLLBACK PREPARED '" + hotel_trans_name + "'");
+		}*/
+		
+		c1.close(); //one class instance -- one commit
 		c2.close();
-		return true;
+		System.out.println("2pc success");
+		return global_commit;
 	}
 	
 	public static Connection getConnection(String db) {
