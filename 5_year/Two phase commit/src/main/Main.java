@@ -14,10 +14,10 @@ public class Main {
 		// TODO Auto-generated constructor stub
 	}
 
-	public static void main(String[] args) throws SQLException, InterruptedException {
+	public static void main(String[] args) throws SQLException{
 		//testConnection();
 		TwoPC twopc = new TwoPC();
-		twopc.create_trip("Ton", "newfly5", "Kyiv", "Minsk", "2019-03-09", "myhotel",  "2019-03-11");
+		twopc.create_trip("Ton_q", "newfly6", "Kyiv", "Minsk", "2019-03-09", "myhotel",  "2019-03-11", 500);
 		/*
 		 * prepare to db1
 		 * prepare to db2
@@ -31,9 +31,9 @@ public class Main {
 
 
 	public static void testConnection() throws SQLException {
-		String db1 = "db1_fly";
+		String db1 = "db3_amount";
 		Connection conn_fly = TwoPC.getConnection(db1);
-		String query = "select * from fly_booking";
+		String query = "select * from amount";
 		ResultSet rs = conn_fly.createStatement().executeQuery(query );
 		
 		printResultSet(rs);

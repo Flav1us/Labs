@@ -11,17 +11,20 @@ public class TwoPC { //one class instance for a single commit
 	static String password = "password";
 	static String fly_trans_name = "insert_fly";
 	static String hotel_trans_name = "insert_hotel";
+	static String amount_trans_name = "insert_amount";
 	
 	static { try { Class.forName("org.postgresql.Driver");
 		} catch (ClassNotFoundException e) { e.printStackTrace(); } }
 	
 	Connection c1 = getConnection("db1_fly");
 	Connection c2 = getConnection("db2_hotel");
+	Connection c3 = getConnection("db3_amount");
 
-	//throws exception if it cannot be handled: connection establishment failure, create statement failure etc.
+		//throws exception if it cannot be handled: connection establishment failure, create statement failure etc.
 	public boolean create_trip(String name, String flight_number, String from, String to,
-			String arrival_date, String hotel, String departure_date) throws SQLException, InterruptedException {
+			String arrival_date, String hotel, String departure_date, int price) throws SQLException{
 
+		System.out.println(1);
 		String prepare_fly = "BEGIN;"
 				+ "insert into fly_booking(name, fly_number, fromm, toooo, date) "
 				+ String.format("values('%s', '%s', '%s', '%s', '%s');", name, flight_number, from, to, arrival_date)
@@ -33,10 +36,21 @@ public class TwoPC { //one class instance for a single commit
 				+ String.format("values('%s', '%s', '%s', '%s');", name, hotel, arrival_date, departure_date)
 				+ "PREPARE TRANSACTION '"+hotel_trans_name+"';";
 	
+		int id = 1;
+		String prepare_amount = "BEGIN;"
+				+ "UPDATE amount SET amount=amount-"+price+" where id = "+id +";"
+				+ "PREPARE TRANSACTION '"+amount_trans_name+"';";
+		
+		/*
+	UPDATE public.amount
+	SET amount=amount-10000
+	WHERE id=1;
+		 */
 		
 		Statement st1 = c1.createStatement();
 		Statement st2 = c2.createStatement();
-
+		Statement st3 = c3.createStatement();
+		System.out.println(2);
 		//voting
 		
 		boolean global_commit = true;
@@ -44,45 +58,43 @@ public class TwoPC { //one class instance for a single commit
 		try {
 			st1.executeUpdate(prepare_fly);	
 		} catch (SQLException e) {
+			System.out.println("err1");
 			e.printStackTrace();
 			global_commit = false;
 		}
-		
+		System.out.println(2);
 		try {
 			st2.executeUpdate(prepare_hotel);	
 		} catch (SQLException e) {
+			System.out.println("err2");
+			e.printStackTrace();
+			global_commit = false;
+		}
+		System.out.println(2);
+		
+		try {
+			System.out.println("try");
+			st3.execute(prepare_amount);
+			System.out.println("tried");
+		} catch (SQLException e) {
+			System.out.println("err3");
 			e.printStackTrace();
 			global_commit = false;
 		}
 		
+		System.out.println(3);
+		
 		if(global_commit) {
-			while(true) { // TC should wait until node 'resurrects'
-				try {
-					st1.executeUpdate("COMMIT PREPARED '" + fly_trans_name + "';");
-					break;
-				} catch(SQLException e) {
-					System.out.println("commit fly failed");
-					Thread.sleep(1000);
-					continue;
-				}
-			}
-			//throw new RuntimeException("Transaction Coordinator Failure");
-			while(true) {
-				try {
-					st2.executeUpdate("COMMIT PREPARED '" + hotel_trans_name + "';");
-					break;
-				} catch(SQLException e) {
-					System.out.println("commit hotel failed");
-					Thread.sleep(1000);
-					continue;
-				}
-			}
+			st1.executeUpdate("COMMIT PREPARED '" + fly_trans_name + "';");
+			st2.executeUpdate("COMMIT PREPARED '" + hotel_trans_name + "';");
+			st3.executeUpdate("COMMIT PREPARED '" + amount_trans_name + "';");
 		}
 		else {
 			st1.executeUpdate("ROLLBACK PREPARED '" + fly_trans_name + "';");
 			st2.executeUpdate("ROLLBACK PREPARED '" + hotel_trans_name + "';");
+			st3.executeUpdate("ROLLBACK PREPARED '" + amount_trans_name + "';");
 		}
-		
+		System.out.println(4);
 		//not sure if its really needed
 		/*st1.executeQuery("select * from pg_prepared_xacts where gid='"+fly_trans_name+"'");
 		st2.executeQuery("select * from pg_prepared_xacts where gid='"+hotel_trans_name+"'");
@@ -104,6 +116,7 @@ public class TwoPC { //one class instance for a single commit
 		
 		c1.close(); //one class instance -- one commit
 		c2.close();
+		c3.close();
 		System.out.println("2pc success");
 		return global_commit;
 	}
