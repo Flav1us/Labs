@@ -1,16 +1,16 @@
 package main;
 
-import java.awt.List;
-import java.util.ArrayList;
+import java.math.BigInteger;
 
 public class Myr {
+	public static final Myr ONE = new Myr("1");
+	public static final Myr ZERO = new Myr("0");
 	int size;
 	int[] marr;
-	Myr(String input) {
+	public Myr(String input) {
 		setArr(input);
 	}
 	
-	//запись в контейнер
 	public void setArr(String input) {
 		if (input == "") input = "0";
 		while(input.charAt(0)=='0') {
@@ -18,26 +18,21 @@ public class Myr {
 			input=input.substring(1);
 		}
 		while (input.length() % 4 != 0) input = "0".concat(input);
-		this.size = input.length()/4; // количество 2^16чных знаков
+		this.size = input.length()/4;
 		this.marr = new int[this.size];
 		for(int i=0; i<this.size; i++) {
 			this.marr[i] = Integer.parseInt(input.substring(input.length()-4*(i+1), input.length()-4*i), 16);
- 
 		}
 	}
 	
-	
-	//возвращает количество шестнадцатеричных знаков, деленное на module, округленное к большему.
-	public static int size(String input, int module) { 
+	/*public static int size(String input, int module) { 
 		while (input.charAt(0)=='0') {
 			if (input.length()==1) return 0;
 			input=input.substring(1);
 		}
 		return (int)Math.ceil((double)input.length()/module);
-	}
+	}*/
 	
-	
-	//вывод содержимого массива-контейнера
 	public String toString() {
 		String res = "";
 		String temp = "";
@@ -46,10 +41,13 @@ public class Myr {
 			while (temp.length() < 4) temp = "0".concat(temp);
 			res=res.concat(temp);
 		}
-		//while (res.charAt(0) == '0') res = res.substring(1);
+		if(res.length() > 0) {
+			while (res.charAt(0) == '0') {
+				res = res.substring(1);
+			}
+		}
 		return res;
 	}
-	
 	
 	public String toDecString() {
 		String res = "";
@@ -71,10 +69,9 @@ public class Myr {
 			res=res.concat(temp);
 		}
 		return res;
-	}
+	}	
 	
-	
-	static Myr LongAdd(Myr A, Myr B) {
+	public static Myr LongAdd(Myr A, Myr B) {
 		int ressize = A.size > B.size ? A.size + 1 : B.size + 1;
 		Myr result = new Myr("");
 		result.marr = new int[ressize];
@@ -86,11 +83,10 @@ public class Myr {
 			result.marr[i] = temp & 65535;
 			carry = temp >> 16;
 		}	
-		return new Myr(result.toString());	
+		return result;	
 	}
 	
-	
-	static Myr LongSub(Myr A, Myr B) throws IllegalArgumentException {
+	public static Myr LongSub(Myr A, Myr B) throws IllegalArgumentException {
 		if (Myr.comp(A, B) == -1) throw new IllegalArgumentException("Wrong arguments: frist argument must be geather then the second");
 		Myr result = new Myr("");
 		result.marr = new int[A.size];
@@ -113,8 +109,7 @@ public class Myr {
 		
 	}
 	
-	
-	static Myr smul(Myr A, int B) throws IllegalArgumentException {
+	public static Myr smul(Myr A, int B) throws IllegalArgumentException {
 		if (B > 0xFFFF) throw new IllegalArgumentException("Illegal second argument: length should be <= 4");
 		int ressize = A.size + Integer.toHexString(B).length();
 		Myr result = new Myr("");
@@ -148,7 +143,7 @@ public class Myr {
 		return Myr.smul(new Myr(this.toString()),0x10);
 	}
 		
-	static Myr LongMul(Myr A, Myr B) {
+	public static Myr LongMul(Myr A, Myr B) {
 		Myr temp = new Myr("");
 		int ressize = A.size + B.size;
 		Myr result = new Myr("");
@@ -157,9 +152,10 @@ public class Myr {
 		for(int i=0; i<B.size; i++) {
 			temp = Myr.smul(A, B.marr[i]); 
 			temp = temp.shift(i);
-			result = new Myr(Myr.LongAdd(result, temp).toString());
+			//result = new Myr(Myr.LongAdd(result, temp).toString());
+			result = Myr.LongAdd(result, temp);
 		}
-		return result;
+		return new Myr(result.toString()); //to remove leading zeroes
 	}
 
 	static int comp(Myr A, Myr B) {
@@ -183,7 +179,12 @@ public class Myr {
 		return 0;
 	}
 	
-	static Divret LongDiv(Myr A, Myr B) {
+	int compareTo(Myr B) {
+		return comp(this, B);
+	}
+	
+	//bugged
+	public static Divret LongDiv(Myr A, Myr B) {
 		Divret result = new Divret();
 		int l1;
 		int l2 = B.size;
@@ -209,7 +210,7 @@ public class Myr {
 			return result;
 	}
 	
-	static Myr LongPow(Myr A, Myr B) {
+	public static Myr LongPow(Myr A, Myr B) {
 		Myr result = new Myr("");
 		int ressize = A.size * B.size;
 		result.marr = new int[ressize];
@@ -224,7 +225,7 @@ public class Myr {
 		return result;
 	}
 	
-	static Myr gcdEvkl(Myr A, Myr B) { //O(loga)
+	public static Myr gcdEvkl(Myr A, Myr B) { //O(loga)
 		long start_timer = System.currentTimeMillis();
 		if(Myr.comp(B, new Myr("0"))==0 || Myr.comp(A, new Myr("0"))==0) {
 			System.out.println("evkl run time: " + (System.currentTimeMillis()-start_timer) + "ms. !Trivial case!");
@@ -251,7 +252,7 @@ public class Myr {
 	
 	static Myr gcdStein(Myr A, Myr B) { //2loga
 		long start_timer = System.currentTimeMillis();
-		Myr T = new Myr("");  //понадобится в 3м while
+		Myr T = new Myr("");  //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ 3пїЅ while
 		Myr d = new Myr("1");
 		while (A.marr[0] % 2 == 0 && B.marr[0] % 2==0) {
 			//System.out.println("1st while");
@@ -312,7 +313,7 @@ public class Myr {
 		return Myr.LongDiv(Myr.LongMul(A, B), Myr.gcdEvkl(A,B)).Q; // lcm(a,b) = a*b/gcd(a,b)
 	}
 	
-	static Myr LongAdd(Myr A, Myr B, Myr mod) {
+	public static Myr LongAdd(Myr A, Myr B, Myr mod) {
 		if (Myr.comp(A, mod) > 0) A = Myr.LongDiv(A, mod).remainder;
 		if (Myr.comp(B, mod) > 0) B = Myr.LongDiv(B, mod).remainder;
 		int ressize = A.size > B.size ? A.size + 1 : B.size + 1;
@@ -330,7 +331,7 @@ public class Myr {
 		return new Myr(Myr.LongDiv(result, mod).remainder.toString());	
 	}
 	
-	static Myr LongSub(Myr A, Myr B, Myr mod) throws IllegalArgumentException {
+	public static Myr LongSub(Myr A, Myr B, Myr mod) throws IllegalArgumentException {
 		if (Myr.comp(A, B) == -1) throw new IllegalArgumentException("Wrong arguments: frist argument must be geather then the second");
 		Myr result = new Myr("");
 		result.marr = new int[A.size];
@@ -353,7 +354,7 @@ public class Myr {
 		
 	}
 	
-	Myr KillLD(int k) { // KillLastDigits - вспомогательная функция для Barrett. Возвращает остаток от деления входного числа на (2^16)^k
+	public Myr KillLD(int k) { // KillLastDigits - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ Barrett. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ (2^16)^k
 		Myr T = new Myr(this.toString());
 		for(int i=0; i<T.size; i++) {
 			if (i<T.size-k) T.marr[i] = T.marr[i+k];
@@ -376,43 +377,71 @@ public class Myr {
 		return Myr.LongDiv(X, new Myr(a)).Q;
 	}*/
 	
-	static Myr Barrett(Myr A, Myr N, Myr m) { // выход - r = A mod N, m - вспомогательное предвычисленное значение [((2^16)^2*N.size)/N]
+	
+	static Myr Barrett(Myr A, Myr N, Myr m) { // пїЅпїЅпїЅпїЅпїЅ - r = A mod N, m - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ [((2^16)^2*N.size)/N]
 		int k = N.size	/*(int)Math.ceil(((double)A.size)/2.0)*/;
 		/*System.out.println("k = " + k);
 		System.out.println("Mu = " + m);
-		System.out.println("A = " + A.toString());
-		*/
+		System.out.println("A = " + A.toString());*/
 		Myr q = A.KillLD(k-1);
 		//System.out.println("q= " + q.toString());
 		q = Myr.LongMul(q, m);
 		//System.out.println("q*m= "+q.toString());
 		q = q.KillLD(k+1);
 		/*System.out.println("q= "+q.toString());
-		System.out.println("A= " + A.toString() + " q*N= " + Myr.LongMul(q, N) );
-		*/
+		System.out.println("A= " + A.toString() + " q*N= " + Myr.LongMul(q, N) );*/
 		Myr r = Myr.LongSub(A, Myr.LongMul(q, N));
-		//System.out.println(r.toString());
+		System.out.println("r:"+r.toString());
 		while (Myr.comp(r, N) >= 0) {
-			//System.out.println(r.toString() + "   " + N.toString());
+			System.out.println(r.toString() + "   " + N.toString());
 			r = Myr.LongSub(r, N);
 		}
-		return r;
+		return new Myr(r.toString());
 	}
 
-	static Myr LongPowBarrett(Myr A, Myr B, Myr N) {
+	public static Myr LongPowBarrett(Myr A, Myr B, Myr N) {
 		String b = B.toBinString();
 		Myr C = new Myr("1");
-		Myr Mu = Myr.LongDiv(new Myr("1").shift(2*B.size), N).Q;
+		Myr shift = new Myr("1").shift(2*B.size);
+		//System.out.println("shift");
+		//Myr Mu = Myr.LongDiv(shift , N).Q;
+		Myr Mu = new Myr(new BigInteger(shift.toString(), 16).divide(new BigInteger(N.toString(), 16)).toString(16));
+		System.out.println("div");
 		for(int i=0; i<b.length(); i++) {
 			if(b.charAt(b.length()-i-1) == '1') {
 				C = Myr.Barrett(Myr.LongMul(A, C), N, Mu);
 			}
 			A = Myr.Barrett(Myr.LongMul(A, A), N, Mu);
 		}
-		return C;
+		return new Myr(C.toString());
 	}
 	//4bee3936c723a16d22e846395eb3b7851a77b5111a9c29732fea5ce214aa4b4
 	//137D3DCDC00BE0F9BC13B8CDF5378A88E22A521DD6B809700F25B2028C23E
+
+	public Myr multiply(Myr B) {
+		return LongMul(this, B);
+	}
+
+	public Myr subtract(Myr B) {
+		return LongSub(this, B);
+	}
+
+	public Myr divide(Myr B) {
+		return LongDiv(this, B).Q;
+	}
+
+	public Myr mod(Myr modulus) {
+		return LongDiv(this, modulus).remainder;
+	}
+
+	public Myr modInverse(Myr b) {
+		Myr a = this;
+		Myr s = Myr.ZERO, old_s = Myr.ONE;
+		Myr r = b, old_r = a;
+		
+		return old_s;
+	}
+
 
 }
 
