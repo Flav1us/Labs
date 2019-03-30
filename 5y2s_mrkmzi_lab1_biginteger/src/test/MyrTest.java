@@ -29,7 +29,7 @@ public class MyrTest {
 		assertTrue(at_inv.toString(16).equals(a_inv.toString()));
 	}
 	
-	@Ignore
+	//@Ignore
 	@Test
 	public void testLongPowBarrett() {
 		long t0 = System.currentTimeMillis();
@@ -55,6 +55,7 @@ public class MyrTest {
 		assertTrue(res1.equals(res2));
 	}
 	
+	@Ignore
 	@Test
 	public void testEfficency() {
 		System.out.println("efficency test");

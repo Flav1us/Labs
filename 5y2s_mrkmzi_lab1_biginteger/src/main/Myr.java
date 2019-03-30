@@ -1,6 +1,8 @@
 package main;
 
-import java.math.BigInteger;
+//import java.math.BigInteger;
+
+import org.apache.commons.lang3.StringUtils;
 
 public class Myr {
 	public static final Myr ONE = new Myr("1");
@@ -11,9 +13,30 @@ public class Myr {
 		setArr(input);
 	}
 	
+	public Myr(String input, int radix) {
+		switch(radix) {
+			case 2:
+				if (input == "") input = "0";
+				while(input.length()>0 && input.charAt(0)=='0' ) {
+					if (input.length()==1) break;
+					input=input.substring(1);
+				}
+				while (input.length() % 16 != 0) input = "0".concat(input);
+				this.size = input.length()/16;
+				this.marr = new int[this.size];
+				for(int i=0; i<this.size; i++) {
+					this.marr[i] = Integer.parseInt(input.substring(input.length()-16*(i+1), input.length()-16*i), 2);
+				}
+				break;
+			default:
+				throw new IllegalArgumentException("radix " + radix + " not supporteD");
+		}
+
+	}
+
 	public void setArr(String input) {
 		if (input == "") input = "0";
-		while(input.charAt(0)=='0') {
+		while(input.length()>0 && input.charAt(0)=='0' ) {
 			if (input.length()==1) break;
 			input=input.substring(1);
 		}
@@ -36,15 +59,13 @@ public class Myr {
 	public String toString() {
 		String res = "";
 		String temp = "";
-		for(int i=0; i<this.size; i++) {
-			temp = Integer.toHexString(this.marr[this.size-i-1]);
+		for(int i=0; i<this.marr.length; i++) {
+			temp = Integer.toHexString(this.marr[this.marr.length-i-1]);
 			while (temp.length() < 4) temp = "0".concat(temp);
 			res=res.concat(temp);
 		}
-		if(res.length() > 0) {
-			while (res.charAt(0) == '0') {
-				res = res.substring(1);
-			}
+		while (res.length() > 0 && res.charAt(0) == '0') {
+			res = res.substring(1);
 		}
 		return res;
 	}
@@ -139,9 +160,17 @@ public class Myr {
 		return result;
 	}
 	
-	public Myr shiftByOne() {
-		return Myr.smul(new Myr(this.toString()),0x10);
+	public Myr shiftBits(int numbits) {
+		StringBuilder bin_repr = new StringBuilder(this.toBinString());
+		bin_repr.append(StringUtils.repeat('0', numbits));
+		return new Myr(bin_repr.toString(), 2);
 	}
+	
+	
+	/*multiplies by 16
+	 * public Myr shiftByOne() {
+		return Myr.smul(new Myr(this.toString()),0x10);
+	}*/
 		
 	public static Myr LongMul(Myr A, Myr B) {
 		Myr temp = new Myr("");
@@ -187,27 +216,27 @@ public class Myr {
 	public static Divret LongDiv(Myr A, Myr B) {
 		Divret result = new Divret();
 		int l1;
-		int l2 = B.size;
+		int l2 = B.toBinString().length();
 		Myr temp = new Myr("1");
 		Myr C = new Myr("");
 		Myr R = new Myr(A.toString());
-			while(Myr.comp(R, B) >= 0) {
-				l1 = R.size;
-				//System.out.println("R = " + R + ", R.size = " + l1 + "; B = " + B + ", B.size = " + l2);
-				C = B.shift(l1-l2);
-				//System.out.println(R.toString());
+		while(Myr.comp(R, B) >= 0) {
+			l1 = R.toBinString().length();
+			//System.out.println("R = " + R + ", R.size = " + l1 + "; B = " + B + ", B.size = " + l2);
+			C = B.shiftBits(l1-l2);
+			//System.out.println(R.toString());
+			//System.out.println(C.toString());
+			while (Myr.comp(R, C) < 0) {
+				l1--;
+				C = B.shiftBits(l1-l2);
 				//System.out.println(C.toString());
-				while (Myr.comp(R, C) == -1) {
-					l1--;
-					C = B.shift(l1-l2);
-					//System.out.println(C.toString());
-				}
-				R = new Myr(Myr.LongSub(R, C).toString());
-				result.Q = new Myr(Myr.LongAdd(result.Q, temp.shift(l1-l2)).toString());
-				//System.out.println(result.Q.toString());
 			}
-			result.remainder = new Myr(R.toString());
-			return result;
+			R = Myr.LongSub(R, C);
+			result.Q = new Myr(Myr.LongAdd(result.Q, temp.shiftBits(l1-l2)).toString());
+			//System.out.println(result.Q.toString());
+		}
+		result.remainder = new Myr(R.toString());
+		return result;
 	}
 	
 	public static Myr LongPow(Myr A, Myr B) {
@@ -391,9 +420,9 @@ public class Myr {
 		/*System.out.println("q= "+q.toString());
 		System.out.println("A= " + A.toString() + " q*N= " + Myr.LongMul(q, N) );*/
 		Myr r = Myr.LongSub(A, Myr.LongMul(q, N));
-		System.out.println("r:"+r.toString());
+		//System.out.println("r:"+r.toString());
 		while (Myr.comp(r, N) >= 0) {
-			System.out.println(r.toString() + "   " + N.toString());
+			//System.out.println(r.toString() + "   " + N.toString());
 			r = Myr.LongSub(r, N);
 		}
 		return new Myr(r.toString());
@@ -405,8 +434,10 @@ public class Myr {
 		Myr shift = new Myr("1").shift(2*B.size);
 		//System.out.println("shift");
 		//Myr Mu = Myr.LongDiv(shift , N).Q;
-		Myr Mu = new Myr(new BigInteger(shift.toString(), 16).divide(new BigInteger(N.toString(), 16)).toString(16));
-		System.out.println("div");
+		//Myr Mu = new Myr(new BigInteger(shift.toString(), 16).divide(new BigInteger(N.toString(), 16)).toString(16));
+		Myr Mu = Myr.LongDiv(shift , N).Q;
+		//System.out.println("div");
+		
 		for(int i=0; i<b.length(); i++) {
 			if(b.charAt(b.length()-i-1) == '1') {
 				C = Myr.Barrett(Myr.LongMul(A, C), N, Mu);
