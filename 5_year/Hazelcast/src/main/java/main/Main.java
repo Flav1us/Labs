@@ -10,7 +10,7 @@ import com.hazelcast.core.HazelcastInstance;
 
 public class Main {
 	
-	static String ip1 = "127.0.0.1";
+	static String ip1 = "82.193.117.135";
 	static String ip2 = "";
 
 	public Main() {
@@ -34,7 +34,7 @@ public class Main {
 		System.out.println("Customer with key 1: "+ mapCustomers.get(1));
 		System.out.println("Map Size:" + mapCustomers.size());
 
-		instance.shutdown();
+		//instance.shutdown();
 
 	}
 
