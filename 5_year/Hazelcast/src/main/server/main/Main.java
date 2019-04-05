@@ -10,7 +10,7 @@ import com.hazelcast.core.HazelcastInstance;
 
 public class Main {
 	
-	static String ip1 = "82.193.117.135";
+	static String ip1 = "25.59.39.157";
 	static String ip2 = "";
 
 	public Main() {
