@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.hazelcast.client.HazelcastClient;
 import com.hazelcast.client.config.ClientConfig;
+import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 
@@ -20,8 +21,14 @@ public class Client {
 	}
 	
 	public static void main(String[] args) {
-		
-		client.shutdown();
+		Map<Integer, String> mapCustomers = client.getMap("customers");
+		//mapCustomers.put(4, "Ton");
+		for(Map.Entry<Integer, String> e : mapCustomers.entrySet()) {
+			System.out.println(e.getKey() + "\t" + e.getValue());
+		}
+		System.out.println("map size: "+ mapCustomers.size());
+		System.out.println("members: " + client.getCluster().getMembers().size());
+		//client.;
 	}
 	
 	public static void lockingMap() throws InterruptedException {
