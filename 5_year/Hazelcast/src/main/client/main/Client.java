@@ -16,7 +16,7 @@ public class Client {
 	static {
 		ClientConfig clientConfig = new ClientConfig();
 		clientConfig.getGroupConfig().setName("dev");
-		clientConfig.getNetworkConfig().addAddress("25.59.39.157", "localhost");
+		clientConfig.getNetworkConfig().addAddress("25.55.37.13");
 		client = HazelcastClient.newHazelcastClient(clientConfig);
 	}
 	
@@ -28,6 +28,8 @@ public class Client {
 		}
 		System.out.println("map size: "+ mapCustomers.size());
 		System.out.println("members: " + client.getCluster().getMembers().size());
+		
+		
 		//client.;
 	}
 	
