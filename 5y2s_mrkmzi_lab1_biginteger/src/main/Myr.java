@@ -8,9 +8,15 @@ public class Myr {
 	public static final Myr ONE = new Myr("1");
 	public static final Myr ZERO = new Myr("0");
 	int size;
-	int[] marr;
+	public int[] marr;
+	
 	public Myr(String input) {
 		setArr(input);
+	}
+	
+	public Myr(int[] marr) {
+		this.marr = marr;
+		this.size = marr.length;
 	}
 	
 	public Myr(String input, int radix) {
@@ -67,6 +73,7 @@ public class Myr {
 		while (res.length() > 0 && res.charAt(0) == '0') {
 			res = res.substring(1);
 		}
+		if(res.length() == 0) return "0";
 		return res;
 	}
 	
@@ -77,6 +84,9 @@ public class Myr {
 			temp = Integer.toString(this.marr[this.size-i-1]);
 			while (temp.length() < 4) temp = "0".concat(temp);
 			res=res.concat(temp);
+		}
+		while(res.length()>0 && res.charAt(0)=='0' ) {
+			res=res.substring(1);
 		}
 		return res;
 	}
@@ -89,7 +99,10 @@ public class Myr {
 			while (temp.length() < 16) temp = "0".concat(temp);
 			res=res.concat(temp);
 		}
-		return res;
+		while(res.length()>1 && res.charAt(0)=='0' ) {
+			res=res.substring(1);
+		}
+		return res.length()==0 ? "0" : res;
 	}	
 	
 	public static Myr LongAdd(Myr A, Myr B) {
@@ -162,7 +175,9 @@ public class Myr {
 	
 	public Myr shiftBits(int numbits) {
 		StringBuilder bin_repr = new StringBuilder(this.toBinString());
-		bin_repr.append(StringUtils.repeat('0', numbits));
+		if(numbits >= 0) bin_repr.append(StringUtils.repeat('0', numbits));
+		else if(numbits > -bin_repr.length()) bin_repr.delete(bin_repr.length()+numbits, bin_repr.length());
+		else throw new IllegalArgumentException("cannot shift right anymore");
 		return new Myr(bin_repr.toString(), 2);
 	}
 	
@@ -208,7 +223,7 @@ public class Myr {
 		return 0;
 	}
 	
-	int compareTo(Myr B) {
+	public int compareTo(Myr B) {
 		return comp(this, B);
 	}
 	
@@ -271,7 +286,7 @@ public class Myr {
 			A = T;
 			//System.out.println(B.toString());
 			if (Myr.comp(B, new Myr("0"))==0) {
-				System.out.println("evkl run time: " + (System.currentTimeMillis()-start_timer) + "ms.");
+				//System.out.println("evkl run time: " + (System.currentTimeMillis()-start_timer) + "ms.");
 				return A;
 			}
 		} while (true);
@@ -464,13 +479,79 @@ public class Myr {
 	public Myr mod(Myr modulus) {
 		return LongDiv(this, modulus).remainder;
 	}
+	
+	/*public Myr extended_eucl(Myr a, Myr b) { //not woking
+		Myr q, r, x1 = Myr.ZERO, x2 = Myr.ONE, y1 = Myr.ONE, y2 = Myr.ZERO;
+		Myr x, y, d;
+		while(b.compareTo(Myr.ZERO) > 0) {
+			System.out.println("ext iter");
+			q = a.divide(b);
+			r = a.subtract(q.multiply(b));
+			x = x2.subtract(q.multiply(x1));
+			y = y2.subtract(q.multiply(y1));
+			a = b;
+			b = r;
+			x2 = x1; x1 = x; y2 = y1; y1 = y;
+			if(b.compareTo(a.divide(b).multiply(b)) < 0) break;
+		}
+		x = x2; y = y2; d = a;
+		return x;
+	}*/
 
-	public Myr modInverse(Myr b) {
-		Myr a = this;
-		Myr s = Myr.ZERO, old_s = Myr.ONE;
-		Myr r = b, old_r = a;
+	public Myr modInverse(Myr m) {
+		/*Myr a = new Myr(this.marr);
+		Myr m0 = new Myr(m.marr);
+		Myr y = Myr.ZERO, x = Myr.ONE;
 		
-		return old_s;
+		while(a.compareTo(Myr.ONE) > 0) {
+			System.out.println("iter");
+			Myr q = a.divide(m);
+			Myr t = m;
+			
+			m = a.mod(m);
+			a = t;
+			t = y;
+			
+			try {
+				y = x.subtract(q.multiply(y));
+			} catch(IllegalArgumentException e) {
+				return x;
+			}
+			x = t;
+		}
+		return x;*/
+		return LongPowBarrett(this, m.subtract(new Myr("2")), m);
+	}
+
+	public Myr and(Myr mask) {
+		int[] res_marr = new int[Math.min(this.marr.length, mask.marr.length)];
+		for(int i = 0; i < res_marr.length ; i++) {
+			res_marr[i] = this.marr[i] & mask.marr[i];
+		}
+		return new Myr(res_marr); 
+	}
+
+	public Myr add(Myr B) {
+		return Myr.LongAdd(this, B);
+	}
+
+	public boolean testBit(int i) {
+		String binr = this.toBinString();
+		return this.toBinString().charAt(binr.length() - i - 1) == '0' ? false : true;
+	}
+	
+	public boolean equals(Myr B) {
+		if(this.marr.length == B.marr.length) {
+			//System.out.println("len ok");
+			for(int i = 0; i < this.marr.length; i++) {
+				if(this.marr[i] != B.marr[i]) return false;
+			}
+		}
+		return this.toString().equals(B.toString());
+	}
+	
+	public Myr pow(Myr B) {
+		return LongPow(this, B);
 	}
 
 

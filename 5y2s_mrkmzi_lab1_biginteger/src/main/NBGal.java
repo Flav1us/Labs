@@ -164,6 +164,7 @@ public class NBGal {
 	}
 	
 	static void testMultiplicativeMatrix() {
+		int oldm = m;
 		boolean failDetector = false;
 		
 		m = 3; // ������� ������� �� ������� � ���������.
@@ -186,7 +187,7 @@ public class NBGal {
 			printMatrix(lambda_proved);
 		}
 		
-		m = 131;
+		m = oldm;
 		NBGal.powersOf2mod263 = findPowersOf2mod263();
 		NBGal.lambda = NBGal.findMultiplicativeMatrix();
 		//NBGal t = new NBGal("1");
@@ -265,6 +266,7 @@ public class NBGal {
 	}
 	
 	public static void testMultiplication() throws IllegalArgumentException, Exception {
+		int oldm = m;
 		boolean failDetector = false;
 		//������ �� �������� 3.10.2016
 		m = 3;
@@ -275,7 +277,7 @@ public class NBGal {
 			failDetector = true;
 		}
 		if(failDetector != true) System.out.println("Multiplication test passed.");
-		m = 131;
+		m = oldm;
 		
 	}
 	
