@@ -18,7 +18,7 @@ public final class MontReducer {
 	public Myr modulus;  // Must be an odd number at least 3
 	
 	// Computed numbers
-	public Myr reducer;       // Is a power of 2
+	public Myr reducer;       // Is a power of 2. With myr impl makes sense to make it pow of 2^16. ((2^16)^k)
 	public int reducerBits;          // Equal to log2(reducer)
 	public Myr reciprocal;    // Equal to reducer^-1 mod modulus
 	public Myr mask;          // Because x mod reducer = x & (reducer - 1)
@@ -62,6 +62,10 @@ public final class MontReducer {
 		return x.multiply(reciprocal).mod(modulus);
 	}
 	
+	//public Myr reduce(Myr x) {
+		
+	//}
+	
 	
 	// Inputs and output are in Montgomery form and in the range [0, modulus)
 	public Myr multiply(Myr x, Myr y) {
@@ -75,6 +79,14 @@ public final class MontReducer {
 		return result;
 	}
 	
+	/*public Myr reduce(Myr x) {
+		Myr y = convertIn(x);
+		Myr temp = y.and(mask).multiply(factor).and(mask);
+		Myr reduced = y.add(temp.multiply(modulus)).shiftBits(-reducerBits);
+		Myr result = reduced.compareTo(modulus) < 0 ? reduced : reduced.subtract(modulus);
+		assert result.compareTo(modulus) < 0;
+		return convertOut(result);
+	}*/
 	
 	// Input x (base) and output (power) are in Montgomery form and in the range [0, modulus); input y (exponent) is in standard form
 	public Myr pow(Myr x, Myr y) {

@@ -174,11 +174,45 @@ public class Myr {
 	}
 	
 	public Myr shiftBits(int numbits) {
+		if(numbits >= 0) return shiftBitsOptimized(numbits);
+		
 		StringBuilder bin_repr = new StringBuilder(this.toBinString());
 		if(numbits >= 0) bin_repr.append(StringUtils.repeat('0', numbits));
 		else if(numbits > -bin_repr.length()) bin_repr.delete(bin_repr.length()+numbits, bin_repr.length());
-		else throw new IllegalArgumentException("cannot shift right anymore");
+		else {
+			System.out.println("numBits: " + numbits + " , bin length: " + bin_repr.length());
+			throw new IllegalArgumentException("cannot shift right anymore");
+		}
 		return new Myr(bin_repr.toString(), 2);
+	}
+	
+	public Myr shiftBitsOptimized(int numbits) {
+		if(numbits >= 0) {
+			Myr res = this.shift(numbits/16);
+			int shift = numbits % 16;
+			if (shift == 0) return res;
+			if(Integer.numberOfLeadingZeros(res.marr[res.marr.length-1])-16 >= shift) {
+				//System.out.println("if");
+				for(int i = res.marr.length-1; i>0; i--) {
+					res.marr[i] = ((res.marr[i] << shift)&0xFFFF) ^ res.marr[i-1] >> (16 - shift); // TODO debug
+				}
+				res.marr[0] = (res.marr[0] << shift)&0xFFFF;
+			} else {
+				//System.out.println("else");
+				int[] old_marr = res.marr;
+				res.marr = new int[res.marr.length + 1];
+				res.size++;
+				res.marr[res.marr.length-1] = old_marr[old_marr.length-1] >> (16 - shift);
+				for(int i = res.marr.length-2; i > 0; i--) {
+					//System.out.println("for");
+					
+					res.marr[i] = ((old_marr[i] << shift)&0xFFFF) ^  (old_marr[i-1] >> (16-shift));
+				}
+				res.marr[0] = (old_marr[0] << shift)&0xFFFF;
+			}
+			return res;
+		}
+		else return shiftBits(numbits); //TODO right shift
 	}
 	
 	
@@ -437,6 +471,7 @@ public class Myr {
 		Myr r = Myr.LongSub(A, Myr.LongMul(q, N));
 		//System.out.println("r:"+r.toString());
 		while (Myr.comp(r, N) >= 0) {
+			//System.out.println("sub");
 			//System.out.println(r.toString() + "   " + N.toString());
 			r = Myr.LongSub(r, N);
 		}

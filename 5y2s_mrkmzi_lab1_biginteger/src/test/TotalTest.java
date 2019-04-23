@@ -8,7 +8,9 @@ import java.util.Random;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import main.BarrettReducer;
 import main.BasicLookupReducer;
+import main.MontReducer;
 import main.Myr;
 
 public class TotalTest {
@@ -34,12 +36,20 @@ public class TotalTest {
 	@Test
 	public void testExtremes() {
 		for(int i = 0; i < ec.length; i++) {
+			System.out.println("iter: " + i);
+			Myr mod_m = new Myr(ec[i][1].toString(16));
 			assertTrue(ec[i][0].mod(ec[i][1]).equals(ec[i][2]));
-			BasicLookupReducer blr = new BasicLookupReducer(new Myr(ec[i][1].toString(16)));
+			
+			BasicLookupReducer blr = new BasicLookupReducer(mod_m);
 			assertTrue(blr.reduce(new Myr(ec[i][0].toString(16))).equals(new Myr(ec[i][2].toString(16))));
+			
+			BarrettReducer br = new BarrettReducer(mod_m);
+			assertTrue(br.reduce(new Myr(ec[i][0].toString(16))).equals(new Myr(ec[i][2].toString(16))));
+			
 		}
 	}
 	
+	@Ignore
 	@Test(expected=ArithmeticException.class)
 	public void testExceptions() {
 		BasicLookupReducer blr = new BasicLookupReducer(new Myr("0"));
@@ -65,5 +75,12 @@ public class TotalTest {
 		System.out.println("finished. time taken: " + (double)(System.currentTimeMillis()-t0)/1000 + " sec");
 		
 		
+	}
+	
+	@Ignore
+	@Test
+	public void testShiftBitsOpt() {
+		int i =257;
+		System.out.println(Integer.highestOneBit(i));
 	}
 }

@@ -40,7 +40,7 @@ public class MyrTest {
 		System.out.println(System.currentTimeMillis() - t0 + " ms");
 	}
 	
-	@Ignore
+	//@Ignore
 	@Test
 	public void testLongPowBarrett() {
 		long t0 = System.currentTimeMillis();
@@ -116,6 +116,7 @@ public class MyrTest {
 		}	
 	}
 	
+	@Ignore
 	@Test
 	public void testTestBit() {
 		int test_cases = 100;
@@ -132,6 +133,35 @@ public class MyrTest {
 				System.out.print(bi.testBit(bi.toString(2).length() - j - 1) ? '1' : '0');
 			} System.out.println();*/
 		}
+	}
+	
+	@Ignore
+	@Test
+	public void testShiftBitsOptimized() {
+		for(int i = 0; i < 100; i++) {
+			BigInteger b_int = new BigInteger(1024, new Random());
+			Myr m1 = new Myr(b_int.toString(16));
+			int shift = (int)(Math.random() * 200);
+			Myr s1 = m1.shiftBits(shift);
+			Myr s2 = m1.shiftBitsOptimized(shift);
+			System.out.println(s1 + "\n" + s2 + "\n");
+			assertTrue(s1.equals(s2));
+		}
+
+		/*Myr m1 = new Myr("FFFF");
+		for(int i = 0; i < m1.marr.length; i++) System.out.print(Integer.toHexString(m1.marr[i]) + "\t");
+		System.out.println();
+		m1 = m1.shiftBits(1);
+		for(int i = 0; i < m1.marr.length; i++) System.out.print(Integer.toHexString(m1.marr[i]) + "\t");
+		System.out.println("\n");
+		
+		m1 = new Myr("FFFF");
+		for(int i = 0; i < m1.marr.length; i++) System.out.print(Integer.toHexString(m1.marr[i]) + "\t");
+		System.out.println();
+		m1 = m1.shiftBitsOptimized(1);
+		for(int i = 0; i < m1.marr.length; i++) System.out.print(Integer.toHexString(m1.marr[i]) + "\t");
+		System.out.println();*/
+		
 	}
 
 }

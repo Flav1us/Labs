@@ -8,13 +8,14 @@ import java.util.Random;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import main.BarrettReducer;
 import main.MontRed_reference;
 import main.MontReducer;
 import main.Myr;
 
 public class MontTest {
-
-	//@Ignore
+	
+	@Ignore
 	@Test
 	public void compTest() {
 		int test_cases = 10;

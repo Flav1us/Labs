@@ -2,61 +2,136 @@ package main;
 
 
 public class exec {
+	
+	static String[] args;
+	static Myr module;
 
 	public static void main(String[] args) throws IllegalArgumentException, Exception {
 		long start_timer = System.currentTimeMillis();
+		exec.args = args;
+		
+		if (args.length < 4) {
+			System.out.println("At least 4 arguments expected, found " + args.length + ".");
+		}
+		else {
+			try {
+				module = new Myr(args[2]);
+			} catch (NumberFormatException e) {
+				System.err.println("Exception during parsing " + args[2] + "\nExpected hexademical numbers.");
+				e.printStackTrace();
+				return;
+			}
+			
+			switch(args[0]) { 
+				case "barr":
+					switch(args[1]) {
+					case "pow":
+						powBarrett();
+						break;
+					case "reduce":
+						reduceBarrett();
+						break;
+					default:
+						System.out.println("Unable to parse argument " + args[1] + ". Expected reduce or pow.");
+						break;
+					}
+					break;
+				case "mont":
+					switch(args[1]) {
+					case "pow":
+						powMont();
+						break;
+					default:
+						System.out.println("Unable to parse argument " + args[1] + ". Only pow accepted.");
+						break;
+					}
+					break;
+				case "table":
+					switch(args[1]) {
+					case "reduce":
+						reduceTable();
+						break;
+					default:
+						System.out.println("Unable to parse argument " + args[1] + ". Only reduce accepted.");
+						break;
+					}
+					break;
+				default:
+					System.out.println("Unable to parse argument " + args[0] + ". Expected barr, mont or table.");
+					break;
+			}
+		}
+		
+		System.out.println("run time: " + (System.currentTimeMillis() - start_timer) + " ms");
+	}
+
+	//private static void validate() {}
 	
-		
-		
-		String a1 = "8B7D8F9987015258B7D8F9987015258B7D8F998726325A05037738B4551D2EB810CEF905DBEF78037738B4551D2EB810CEF9057D8F9987015258B7D8F998726325A05037738B4551D2EB810CEF905DBEF7807D8F9987015258B7D8F998726325A05037738B4551D2EB810CEF905DBEF7807D8F9987015258B7D8F998726325A05037738B4551D2EB810CEF905DBEF780";
-		String b1 = "BC29E29CA40F5A4726325A05037738B4551D2EB810CEF905DBEF7850BB14069CBC29E29CA40F5A4726325A05037738B4551D2EB810CEF905DBEF7850BB14069CB810CEF905DBEF7850BB14069CBC29E29CA40F5A4726325A05037738B4551D2EB810CEF905DBEF7850BB1406B810CEF905DBEF7850BB14069CBC29E29CA40F5A4726325A05037738B4551D2EB810CEF905DBEF7850BB1406";
+	private static void reduceTable() {
+		//validate();
+		System.out.println("table reduction");
 
-		Myr A = new Myr(a1);
-		Myr B = new Myr(b1);
+		BasicLookupReducer blr = new BasicLookupReducer(module);
+		
+		Myr reducable;
+		for(int i = 3; i < args.length; i++) {
+			try {
+				reducable = new Myr(args[i]);
+			} catch(NumberFormatException e) {
+				System.err.println("Exception during parsing " + args[i] + "\nExpected hexademical numbers.");
+				e.printStackTrace();
+				continue;
+			}
+			System.out.println(blr.reduce(reducable).toString());			
+		}
+	}
 
-		System.out.println("evkl result: " + Myr.gcdEvkl(A, B));
-		System.out.println("stein result: " + Myr.gcdStein(A, B));
+
+	private static void powMont() {
+		System.out.println("mont pow");
+		MontReducer mr = new MontReducer(module);
 		
-		/*
-		//System.out.println(NBGal.one().toString());
-		Gal.testMul();
-		//Gal.testPow();
-		Gal.testInverse();
-		 */
-		NBGal.testMultiplication();
-		NBGal.testMultiplicativeMatrix();
-		NBGal.testRiseToPow2();
-		NBGal.testInverse();
+		Myr a, b;
+		for(int i = 3; i < args.length; i++) {
+			String[] multipliers = args[i].split("^");
+			if(multipliers.length != 2) {
+				System.err.println("Error during parsing multipliers: split character is ^, expected two arguments in form ab345^CD678");
+				return;
+			}
+			
+			try {
+				a = new Myr(multipliers[0]);
+				b = new Myr(multipliers[1]);
+			} catch(NumberFormatException e) {
+				System.err.println("Exception during parsing " + args[i] + "\nExpected hexademical numbers.");
+				e.printStackTrace();
+				continue;
+			}
+			System.out.println(mr.convertOut(mr.pow(mr.convertIn(a), b)).toString());			
+		}
+	}
+
+	private static void reduceBarrett() {
+		System.out.println("barrett reduction");
+		BarrettReducer brr = new BarrettReducer(module);
 		
+		Myr reducable;
+		for(int i = 3; i < args.length; i++) {
+			try {
+				reducable = new Myr(args[i]);
+			} catch(NumberFormatException e) {
+				System.err.println("Exception during parsing " + args[i] + "\nExpected hexademical numbers.");
+				e.printStackTrace();
+				continue;
+			}
+			System.out.println(brr.reduce(reducable).toString());			
+		}
+	}
+
+	private static void powBarrett() {
+		System.out.println("pow barrett");
+		// TODO Auto-generated method stub
 		
-		/*
-		System.out.println("");
-		String a1 = "8B7D8F9987015259895DA102AA4B01BCE3E540B265860F0763CA0AFCDF1A4B3B";
-		String b1 = "BC29E29CA40F5A4726325A05037738B4551D2EB810CEF905DBEF7850BB14069C";
-		String n = "F9B02C332DB40D46A531CEFBBC3E718A0AC9515C1382F1824700C6C85896E7D2";
-		Myr A = new Myr(a1);
-		Myr B = new Myr(b1);
-		Myr N = new Myr(n);
-		
-		String T = Myr.LongPowBarrett(A, B, N).toString().toUpperCase();
-		while (T.charAt(0) == '0') T = T.substring(1);
-		System.out.println("LongPowBarrett = " + T);
-		System.out.println("DE49D6C412B74A4E6A59FA7A43A8EDDD6F7F05EA9DF54C1CFC8061A29E44A9D5".equals(T.toString().toUpperCase().substring(T.toString().length()-a1.length())));
-		
-	*/
-		/*String A = "14D80CDD914F2C9FE44BFC5917A3B3939F431DC54DEA1BEDC017F53812FF7BF97B25FFE567DCA290D50215EF29FAE694A537E6421D5976E6A7534C50A866BF50";
-		String B = "BEBE7C433689A851B7A3E24294431590C25CD2F75735B33189668A07F428B798";*/
-		/*System.out.println("A+B = " + Myr.LongAdd(new Myr(A), new Myr(B)).toString().toUpperCase());
-		System.out.println("A-B = " + Myr.LongSub(A, B).toString().toUpperCase());*/
-		//System.out.println("A/B = " + Myr.LongDiv(new Myr(A), new Myr(B)).Q.toString().toUpperCase());
-		/*Myr T = Myr.LongDiv(Myr.LongMul(A, B), B).Q;
-		System.out.println("(A*B)/B = " + T.toString().toUpperCase());
-		System.out.println("A =       " + A.toString().toUpperCase());
-		System.out.println(a.equals(T.toString().toUpperCase().substring(T.toString().length()-a.length())));	//substring - ���� ����� � � ����� ���� � ������.
-		
-		*/
-		
-		System.out.println("exec time: " + (System.currentTimeMillis() - start_timer) + " ms");
 	}
 	
 }
