@@ -10,24 +10,24 @@ import java.util.concurrent.ConcurrentHashMap;
 public class BranchAndBound {
 	
 	static final char fixed_input_x = (char) 123456; 
-	static Map<Character, MyEntry> precalc = new ConcurrentHashMap<>();
+	static Map<Character, Diff> precalc = new ConcurrentHashMap<>();
 	
 	static {
-		precalc.put((char)0b1, new MyEntry((char)0b10001, 0.25));
-		precalc.put((char)0b10001, new MyEntry((char)0b110011, 0.0625));
-		precalc.put((char)0b110011, new MyEntry((char)0b1100110000, 0.0625));
-		precalc.put((char)0b1100110000, new MyEntry((char)0b11001100000, 0.0625));
-		precalc.put((char)0b11001100000, new MyEntry((char)0b110000001100000, 0.0625));
-		precalc.put((char)0b110000001100000, new MyEntry((char)0b1010000010100000, 0.0625));
+		precalc.put((char)0b1, new Diff((char)0b10001, 0.25));
+		precalc.put((char)0b10001, new Diff((char)0b110011, 0.0625));
+		precalc.put((char)0b110011, new Diff((char)0b1100110000, 0.0625));
+		precalc.put((char)0b1100110000, new Diff((char)0b11001100000, 0.0625));
+		precalc.put((char)0b11001100000, new Diff((char)0b110000001100000, 0.0625));
+		precalc.put((char)0b110000001100000, new Diff((char)0b1010000010100000, 0.0625));
 	}
 	
 	
-	private static class MyEntry {
+	/*private static class MyEntry {
 		//public MyEntry() {};
 		public MyEntry(char b, double p) {this.beta = b; this.prob = p;}
 		public char beta;
 		public double prob;
-	}
+	}*/
 	
 	private static class Node {
 		char value;
@@ -109,7 +109,7 @@ public class BranchAndBound {
 		maxRoundDP((char)0b110000001100000);
 	}
 	
-	public static double maxRoundDP(char alpha) {
+	public static Diff maxRoundDP(char alpha) {
 		double p_max = 0.0;
 		char appr_beta = 0;
 		for(char beta = Character.MIN_VALUE; beta < Character.MAX_VALUE; beta++) {
@@ -122,7 +122,7 @@ public class BranchAndBound {
 			}
 		}
 		System.out.println(Integer.toBinaryString(alpha) + " -> " + Integer.toBinaryString(appr_beta) + "\t" + p_max);
-		return p_max;
+		return new Diff(appr_beta, p_max);
 	}
 	
 	public static double roundDiffProb(char inp_diff, char out_diff) {
