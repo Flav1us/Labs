@@ -40,7 +40,7 @@ public class Heys {
 	//char works as unsigned 16-bit number
 	public static char round (char block, char round_key) {
 		char res = 0;
-		System.out.println("round key: " + Integer.toHexString((int)round_key));
+		//System.out.println("round key: " + Integer.toHexString((int)round_key));
 		block ^= round_key;
 		char[] t = new char[4];
 		for(int i = 0; i < 4; i++) {

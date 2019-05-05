@@ -1,11 +1,20 @@
-package main;
+package branch_and_bound;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
+import main.Diff;
+import main.Heys;
 
 public class BranchAndBound {
 	
@@ -13,12 +22,12 @@ public class BranchAndBound {
 	static Map<Character, Diff> precalc = new ConcurrentHashMap<>();
 	
 	static {
-		precalc.put((char)0b1, new Diff((char)0b10001, 0.25));
-		precalc.put((char)0b10001, new Diff((char)0b110011, 0.0625));
-		precalc.put((char)0b110011, new Diff((char)0b1100110000, 0.0625));
-		precalc.put((char)0b1100110000, new Diff((char)0b11001100000, 0.0625));
-		precalc.put((char)0b11001100000, new Diff((char)0b110000001100000, 0.0625));
-		precalc.put((char)0b110000001100000, new Diff((char)0b1010000010100000, 0.0625));
+		precalc.put((char)0b1, new Diff((char)0b10001, 0.25));//1
+		precalc.put((char)0b10001, new Diff((char)0b110011, 0.0625));//2
+		precalc.put((char)0b110011, new Diff((char)0b1100110000, 0.0625));//3
+		precalc.put((char)0b1100110000, new Diff((char)0b11001100000, 0.0625));//4
+		precalc.put((char)0b11001100000, new Diff((char)0b110000001100000, 0.0625));//5
+		precalc.put((char)0b110000001100000, new Diff((char)0b1010000010100000, 0.0625));//6
 	}
 	
 	
@@ -28,23 +37,6 @@ public class BranchAndBound {
 		public char beta;
 		public double prob;
 	}*/
-	
-	private static class Node {
-		char value;
-		double input_prob;//what if several parents? its good
-		List<Node> parents = new ArrayList<>();
-		
-		//next round members with probabilities to get into them
-		Map<Node, Double> children = new TreeMap<>();
-		
-		public Node(char value, Node parent) {
-			this.value = value;
-		}
-
-		public void addChild(Node child, double prob) {
-			children.put(child, prob);
-		}
-	}
 	
 	//ignore this func yet
 	public static void precalculation(double p_min) {
@@ -106,7 +98,7 @@ public class BranchAndBound {
 	
 	public static void singleLine(){
 		
-		maxRoundDP((char)0b110000001100000);
+		maxRoundDP((char)0b1);
 	}
 	
 	public static Diff maxRoundDP(char alpha) {
@@ -126,10 +118,13 @@ public class BranchAndBound {
 	}
 	
 	public static double roundDiffProb(char inp_diff, char out_diff) {
+		return roundDiffProb(inp_diff, out_diff, 1);
+	}
+	
+	public static double roundDiffProb(char inp_diff, char out_diff, int decrease_multiplier) {
 		char x = fixed_input_x;
 		//average by keys:
 		char diff_count = 0;
-		int decrease_multiplier = 1;
 		for(char key = Character.MIN_VALUE; key < Character.MAX_VALUE-decrease_multiplier-1; key+=decrease_multiplier) {
 			//System.out.println((int)key);
 			if(Heys.round((char)(x ^ inp_diff), key) == (out_diff ^ (Heys.round(x, key)))) {
@@ -138,8 +133,25 @@ public class BranchAndBound {
 			}
 		}
 		double res = (double)diff_count*decrease_multiplier/(double)(Character.MAX_VALUE -decrease_multiplier-1 - Character.MIN_VALUE);
-		//System.out.println(res);
+		//System.out.println("roundDiffProb: " + res);
 		return res ;
+	}
+	
+	public static double multithreadedRoundDiffProb(char inp_diff, char out_diff/*, int decrease_multiplier*/) throws IOException, InterruptedException, ExecutionException {
+		ExecutorService es = Executors.newFixedThreadPool(4); //4 physical proccessors on my laptop
+		List<Future<Integer>> tasks = new ArrayList<Future<Integer>>(); 
+		for(int i = 0; i < 4; i++) {
+			 tasks.add(es.submit(new KeySearch((char)(Character.MAX_VALUE*i/4), (char)(Character.MAX_VALUE*(i+1)/4), fixed_input_x, inp_diff, out_diff)));
+		}
+		System.in.read();
+		int res_diff_count = 0;
+		for(int i = 0; i < tasks.size(); i++) {
+			res_diff_count += tasks.get(i).get();
+		}
+		es.shutdown();
+		double res = (double)res_diff_count/(double)(Character.MAX_VALUE - Character.MIN_VALUE);
+		System.out.println("multithreadedRoundDiffProb: " + res);
+		return res;
 	}
 
 }
