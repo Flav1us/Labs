@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-class Node {
-	char value;
-	double input_prob;//what if several parents? its good
+public class Node {
+	public char value;
+	public double input_prob;//what if several parents? its good
 	List<Node> parents = new ArrayList<>();
 	
 	//next round members with probabilities to get into them

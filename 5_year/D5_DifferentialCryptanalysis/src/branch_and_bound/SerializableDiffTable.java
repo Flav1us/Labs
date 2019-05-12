@@ -25,7 +25,7 @@ public class SerializableDiffTable implements Serializable {
 
 	private static final long serialVersionUID = 123456782010L;
 	private static final String filepath = "C:\\Users\\ASUS\\Desktop\\D5_CP1\\serializable_diff_table.bin";
-	public List<Map<Character,Double>> probabilities;
+	public List<Map<Character,Double>> probabilities = null;
 	
 	public SerializableDiffTable() throws ClassNotFoundException, IOException {
 		this.probabilities = this.load();
