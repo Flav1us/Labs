@@ -15,7 +15,7 @@ import main.Myr;
 
 public class MontTest {
 	
-	@Ignore
+	//@Ignore
 	@Test
 	public void compTest() {
 		int test_cases = 10;
@@ -45,7 +45,7 @@ public class MontTest {
 		}
 	}
 	
-	@Ignore
+	//@Ignore
 	@Test
 	public void testConvert() {
 		int n_iter = 10;
@@ -71,7 +71,7 @@ public class MontTest {
 		}
 	}
 	
-	@Ignore
+	//@Ignore
 	@Test
 	public void testMultiplyAndPow() {
 		int n_iter = 10;
@@ -100,7 +100,7 @@ public class MontTest {
 		}
 	}
 	
-	@Ignore
+	//@Ignore
 	@Test
 	public void testFields() {
 		BigInteger modt = BigInteger.probablePrime(1024, new Random());

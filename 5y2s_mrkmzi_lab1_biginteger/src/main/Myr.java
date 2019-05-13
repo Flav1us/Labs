@@ -180,8 +180,9 @@ public class Myr {
 		if(numbits >= 0) bin_repr.append(StringUtils.repeat('0', numbits));
 		else if(numbits > -bin_repr.length()) bin_repr.delete(bin_repr.length()+numbits, bin_repr.length());
 		else {
-			System.out.println("numBits: " + numbits + " , bin length: " + bin_repr.length());
-			throw new IllegalArgumentException("cannot shift right anymore");
+			/*System.out.println("numBits: " + numbits + " , bin length: " + bin_repr.length());
+			throw new IllegalArgumentException("cannot shift right anymore");*/
+			return Myr.ZERO;
 		}
 		return new Myr(bin_repr.toString(), 2);
 	}
@@ -236,7 +237,7 @@ public class Myr {
 		return new Myr(result.toString()); //to remove leading zeroes
 	}
 
-	static int comp(Myr A, Myr B) {
+	public static int comp(Myr A, Myr B) {
 		//if (A.size>B.size) return 1;
 		//if (A.size<B.size) return -1;
 		//System.out.println(A.toString()+ " A "+A.size);

@@ -28,7 +28,17 @@ public class BasicLookupReducer {
 		//System.out.println("res: " + res.toString());
 		for(int i = k; i < arg.marr.length; i++) {
 			//System.out.println("res: " + res.toString() + " += " + new Myr(Arrays.copyOfRange(arg.marr, i, i+1)).toString() + " * " + lookup_table[i-k].toString());
-			res = res.add(lookup_table[i-k].multiply(new Myr(Arrays.copyOfRange(arg.marr, i, i+1))));
+			try {
+				res = res.add(lookup_table[i-k].multiply(new Myr(Arrays.copyOfRange(arg.marr, i, i+1))));
+			} catch (ArrayIndexOutOfBoundsException e) {
+				if (arg.toBinString().length() >= mod.toBinString().length() * 2) {
+					throw new IllegalArgumentException(
+							"Lookup table can't handle such a big argument, sempai. Argument should be < mod^2.\n"
+									+ "arg bit length: " + arg.toBinString().length() + ",\n" + "mod bit length: "
+									+ mod.toBinString().length() + ".");
+				}
+				else throw e;
+			}
 		}
 		return res.mod(mod);
 	}

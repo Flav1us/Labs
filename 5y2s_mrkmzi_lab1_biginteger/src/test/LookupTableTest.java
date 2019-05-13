@@ -19,13 +19,14 @@ public class LookupTableTest {
 		int num_iter = 100;
 		for(int i= 0; i < num_iter; i++) {
 			int mod_len = (int)(Math.random()*2047)+1;
-			BigInteger reducable = new BigInteger(mod_len, new Random()).multiply(new BigInteger(mod_len*2, new Random()));
-			BigInteger mod = new BigInteger((int)(Math.random()*mod_len), new Random());
+			BigInteger reducable = new BigInteger(mod_len*2 - 1, new Random());
+			BigInteger mod = new BigInteger(mod_len, new Random());
 			assert mod.bitLength() < reducable.bitLength();
 			BigInteger reduced = reducable.mod(mod);
 			
 			Myr reducable_m = new Myr(reducable.toString(16));
 			Myr mod_m = new Myr(mod.toString(16));
+			//System.out.println(reducable_m.toString() + "\t" + mod_m.toString());
 			Myr reduced_m = new BasicLookupReducer(mod_m).reduce(reducable_m);
 			
 			//System.out.println(reduced_m.toString() + "\n" + reduced.toString(16));
@@ -33,7 +34,8 @@ public class LookupTableTest {
 		}
 	}
 	
-	@Ignore
+	//broken: need z < mod^2
+	@Ignore 
 	@Test
 	public void basic_test() {
 		BigInteger reducable = new BigInteger("65c792fe988c3c3aabf5c2fb97e4e00d79c32e77", 16);

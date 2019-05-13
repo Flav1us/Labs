@@ -1,16 +1,18 @@
-package main;
+package advancedBarrett;
 
-public class BarrettReducer {
+import main.Myr;
+
+public class AdvBarrettReducer {
 	Myr mod;
 	Myr mu;
 	int shift;
-	public BarrettReducer(Myr mod) {
+	public AdvBarrettReducer(Myr mod) {
 		if(mod.equals(Myr.ZERO)) {
 			throw new ArithmeticException("modulus cant be zero");
 		}
 		//System.out.println("BR constructor:");
 		this.mod = mod;
-		this.shift = mod.toBinString().length()*2;
+		this.shift = mod.toBinString().length()*2; //TODO redifine
 		this.mu = getMu(mod);
 		//System.out.println("(hex)factor: " + this.mu.toString());
 		//System.out.println("(dec)shift " + shift);

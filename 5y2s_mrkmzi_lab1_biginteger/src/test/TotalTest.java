@@ -32,7 +32,7 @@ public class TotalTest {
 		ec[2][2] = new BigInteger("0");
 	}
 
-	//@Ignore
+	@Ignore
 	@Test
 	public void testExtremes() {
 		for(int i = 0; i < ec.length; i++) {
@@ -82,5 +82,14 @@ public class TotalTest {
 	public void testShiftBitsOpt() {
 		int i =257;
 		System.out.println(Integer.highestOneBit(i));
+	}
+	
+	@Ignore
+	@Test
+	public void testRegEx() {
+		String input = "7^2";
+		String[] split = input.split("\\^");
+		for(String i : split) System.out.println(i + "\t");
+		System.out.println();
 	}
 }

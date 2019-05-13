@@ -45,7 +45,7 @@ public final class MontReducer {
 		
 		// Other computed numbers
 		reciprocal = reducer.modInverse(modulus);
-		factor = reducer.multiply(reciprocal).subtract(Myr.ONE).divide(modulus);
+		factor = reducer.multiply(reciprocal).subtract(Myr.ONE).divide(modulus); //k
 		convertedOne = reducer.mod(modulus);
 	}
 	
@@ -61,19 +61,14 @@ public final class MontReducer {
 	public Myr convertOut(Myr x) {
 		return x.multiply(reciprocal).mod(modulus);
 	}
-	
-	//public Myr reduce(Myr x) {
-		
-	//}
-	
-	
+
 	// Inputs and output are in Montgomery form and in the range [0, modulus)
 	public Myr multiply(Myr x, Myr y) {
 		assert x.compareTo(modulus) < 0;
 		assert y.compareTo(modulus) < 0;
 		Myr product = x.multiply(y);
 		Myr temp = product.and(mask).multiply(factor).and(mask);
-		Myr reduced = product.add(temp.multiply(modulus)).shiftBits(-reducerBits);
+		Myr reduced = product.add(temp.multiply(modulus)).shiftBits(-reducerBits); //(x + sn) / r
 		Myr result = reduced.compareTo(modulus) < 0 ? reduced : reduced.subtract(modulus);
 		assert result.compareTo(modulus) < 0;
 		return result;
