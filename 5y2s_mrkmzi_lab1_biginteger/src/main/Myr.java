@@ -434,12 +434,11 @@ public class Myr {
 	}
 	
 	public Myr KillLD(int k) { // KillLastDigits - ��������������� ������� ��� Barrett. ���������� ������� �� ������� �������� ����� �� (2^16)^k
-		Myr T = new Myr(this.toString());
-		for(int i=0; i<T.size; i++) {
-			if (i<T.size-k) T.marr[i] = T.marr[i+k];
-			else T.marr[i] = 0;
+		int[] marr = new int[this.marr.length - k];
+		for(int i=0; i<marr.length; i++) {
+			marr[i] = this.marr[i+k];
 		}
-		return T;
+		return new Myr(marr);
 	}
 	
 	/*static Myr FindMu(String a, String b) {

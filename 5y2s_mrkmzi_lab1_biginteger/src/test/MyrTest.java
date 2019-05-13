@@ -40,7 +40,7 @@ public class MyrTest {
 		System.out.println(System.currentTimeMillis() - t0 + " ms");
 	}
 	
-	//@Ignore
+	@Ignore
 	@Test
 	public void testLongPowBarrett() {
 		long t0 = System.currentTimeMillis();
@@ -162,6 +162,21 @@ public class MyrTest {
 		for(int i = 0; i < m1.marr.length; i++) System.out.print(Integer.toHexString(m1.marr[i]) + "\t");
 		System.out.println();*/
 		
+	}
+	
+	@Ignore
+	@Test
+	public void testKillLD() {
+		int num_iter = 1000;
+		for (int i = 0; i < num_iter; i++) {
+			BigInteger bi = new BigInteger(1022, new Random());
+			int k = (int)(Math.random()*40);
+
+			Myr m = new Myr(bi.toString(16));
+			Myr m_shift_k = m.KillLD(k);
+			assertTrue(m_shift_k.marr.length - m.marr.length == -k);
+			assertTrue(bi.shiftRight(k * 16).toString(16).equals(m_shift_k.toString()));
+		}
 	}
 
 }

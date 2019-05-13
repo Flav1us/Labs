@@ -65,4 +65,17 @@ public class BarrettReducerTest {
 		System.out.println(b_br.reduce(b_x).toString(16));
 		System.out.println(br.reduce(x).toString());
 	}
+	
+	@Ignore
+	@Test
+	public void testMu() {
+		Myr mod = new Myr("abcd");
+		int k = mod.marr.length;
+		System.out.println("len " + mod.marr.length);
+		BarrettReducer br = new BarrettReducer(mod);
+		Myr mu = br.getMu(mod);
+		System.out.println(mu.toString());
+		Myr z = new Myr("abcdef111111111111");
+		System.out.println(z.shift(-k+1).toString());
+	}
 }
