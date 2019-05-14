@@ -10,6 +10,7 @@ import branch_and_bound.PrecalculationTable;
 
 public class Main {
 
+	static String workdir = "C:\\Users\\ASUS\\Desktop\\D5_CP1";
 	public Main() {
 		// TODO Auto-generated construcjjjjjjjjjjnnnnnnnnnnnnnnnnnnnnnnnnnmtor stub
 	}
@@ -41,10 +42,12 @@ public class Main {
 
 					List<Node> last = PrecalculationTable.content.get(PrecalculationTable.content.size() - 1);
 					PrecalculationTable.sortNodeList(last);
-					if (last.size() > 0)
-						System.out.println("\nmax_prob: " + Integer.toString((int) last.get(0).value, 2) + "\t"
-								+ last.get(0).input_prob);
-					else
+					if (last.size() > 0) {
+						if (((last.get(0).value >> 8) & 0xf) > 0) {
+							System.out.println("\nmax_prob: " + Integer.toString((int) last.get(0).value, 16) + "\t"
+									+ last.get(0).input_prob);
+						}
+					} else
 						System.out.println("no candidates");
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -52,6 +55,10 @@ public class Main {
 				}
 			}
 		}
+	}
+	
+	public static void intersection() throws IOException {
+	 
 	}
 
 	/*private static void expectedNeededTexts() {
