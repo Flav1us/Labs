@@ -8,6 +8,7 @@ import java.util.Random;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import main.BarrettReducer;
 import main.Myr;
 
 public class MyrTest {
@@ -40,7 +41,7 @@ public class MyrTest {
 		System.out.println(System.currentTimeMillis() - t0 + " ms");
 	}
 	
-	//@Ignore
+	@Ignore
 	@Test
 	public void testLongPowBarrett() {
 		long t0 = System.currentTimeMillis();
@@ -51,6 +52,65 @@ public class MyrTest {
 		long t2 = System.currentTimeMillis();
 		System.out.println("Myr time: " + (t2-t1) + " ms.");
 		assertTrue(res1.equals(res2));
+	}
+	
+	@Ignore
+	@Test
+	public void testLongPowBarrett_new() {
+		long t0 = System.currentTimeMillis();
+		/*Myr[] my = new Myr[100];
+		for(int i = 0; i < my.length; i++) {
+			my[i] = new Myr(new BigInteger(1024, new Random()).toString(16));
+		}
+		for(int i = 0; i < my.length-1; i++) {
+			my[i].multiply(my[i+1]);
+		}
+		System.out.println("mul time: " + (System.currentTimeMillis() - t0) + " ms.");*/
+		
+		for (int i = 0; i < 10000; i++) {
+			int size = (int)(Math.random()*1024);
+			BigInteger at = new BigInteger(size, new Random());
+			BigInteger bt = new BigInteger(size, new Random());
+			BigInteger mt = new BigInteger(size, new Random());
+			
+			Myr a = new Myr(at.toString(16));
+			Myr b = new Myr(bt.toString(16));
+			Myr m = new Myr(mt.toString(16));
+			
+			t0 = System.currentTimeMillis();
+			String res1 = at.modPow(bt, mt).toString(16);
+			long t1 = System.currentTimeMillis();
+			System.out.println("BigInteger time: " + (t1 - t0) + " ms.");
+			String res2 = Myr.longPowBarrett_new(a, b, m).toString();
+			long t2 = System.currentTimeMillis();
+			System.out.println("Myr time: " + (t2 - t1) + " ms.");
+			try {
+				assertTrue(res1.equals(res2));
+			} catch(AssertionError e) {
+				System.out.println("assertion error");
+				System.out.println("bint: " + res1);
+				System.out.println("!=");
+				System.out.println("myr : " + res2);
+				System.out.println("on arguments");
+				System.out.println(at.toString(16) + "\n" + bt.toString(16) + "\n");
+				System.out.println(a.toString() + " ^ " + b.toString() + " mod " + m.toString());
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	//@Ignore
+	@Test
+	public void manualTestLongPowBarr() {
+		//System.out.println("charat "+ "0".charAt(-1));
+		
+		Myr mod = new Myr("3");
+		Myr x = new Myr("100");
+		Myr pow = new Myr("00");
+//		System.out.println(Myr.longPowBarrett_new(x, pow, mod));
+		BarrettReducer br = new BarrettReducer(mod);
+		//br.reduce(x.multiply(x));
+		br.reduce(x);
 	}
 	
 	@Ignore

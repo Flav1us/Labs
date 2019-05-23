@@ -10,14 +10,22 @@ public class exec {
 		args = new String[5];
 		args[0] = "barr";
 		args[1] = "pow";
-		args[2] = "5";
+		args[2] = "1";
 		args[3] = "3A**0";
 		args[4] = "0**0";
 		
+
+		args[3] = "2**10000";//"2**10000";
+		args[4] = "123d**5e1";
+	
 		//System.out.println(Integer.parseInt("78", 16));
 		
-		long start_timer = System.currentTimeMillis();
 		exec.args = args;
+		long start_timer = System.currentTimeMillis();
+		System.out.println("args:");
+		for(int i = 0; i < args.length; i++) {
+			System.out.println((i+1) + ":\t" + args[i]);
+		}
 		
 		if (args.length < 4) { 
 			System.out.println("At least 4 arguments expected, found " + args.length + ".");
@@ -159,6 +167,7 @@ public class exec {
 				e.printStackTrace();
 				continue;
 			}
+			System.out.println(a.toString()+" ^ "+b.toString() + " mod " + module.toString());
 			System.out.println(Myr.LongPowBarrett(a, b, module));			
 		}
 	}

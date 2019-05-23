@@ -49,7 +49,7 @@ public class Main {
 		char[] cbuf;
 		int[][] errors;
 		Criterion_1_1 cr = new Criterion_1_1(formated);
-		int len = 1000;
+		int len = 100;
 		int num = 1000;
 		cbuf = new char[len];
 		errors = new int[2][2];
@@ -60,7 +60,7 @@ public class Main {
 			BufferedWriter unenc_fw = new BufferedWriter(new FileWriter(text));
 			unenc_fw.write(cbuf);
 			unenc_fw.close();
-			char[] enc = Encrypt.affine(cbuf);
+			char[] enc = Encrypt.vigenere(cbuf);
 			BufferedWriter enc_fw = new BufferedWriter(new FileWriter(text_enc));
 			enc_fw.write(enc);
 			enc_fw.close();

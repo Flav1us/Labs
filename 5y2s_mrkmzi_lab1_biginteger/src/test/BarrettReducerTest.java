@@ -8,7 +8,6 @@ import java.util.Random;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import external_impl.BigBarrettReducer;
 import main.BarrettReducer;
 import main.Myr;
 
@@ -28,15 +27,15 @@ public class BarrettReducerTest {
 		}
 	}
 
-	//@Ignore
+	@Ignore
 	@Test
 	public void test_barr() {
-		for(int j = 0; j < 10; j++) {
+		for(int j = 0; j < 1000; j++) {
 		//System.out.println("iter j");
 		BigInteger modb = new BigInteger(1024, new Random());
 		Myr mod = new Myr(modb.toString(16));
 		BarrettReducer br = new BarrettReducer(mod);
-		for(int i = 0; i < 100; i++) {
+		for(int i = 0; i < 1000; i++) {
 			BigInteger xb;
 			do { //ref impl works for x < mod^2.
 				//System.out.println("while");
@@ -52,17 +51,4 @@ public class BarrettReducerTest {
 		}
 	}
 	
-	@Ignore
-	@Test
-	public void compTest() {
-		BigInteger b_mod = new BigInteger("5");
-		BigInteger b_x = new BigInteger("17");
-		Myr mod = new Myr(b_mod.toString(16));
-		Myr x = new Myr(b_x.toString(16));
-		BigBarrettReducer b_br = new BigBarrettReducer(b_mod);
-		BarrettReducer br = new BarrettReducer(mod);
-		
-		System.out.println(b_br.reduce(b_x).toString(16));
-		System.out.println(br.reduce(x).toString());
-	}
 }

@@ -22,12 +22,12 @@ public class exec {
 		Gal.testMul();
 		//Gal.testPow();
 		Gal.testInverse();
-		 
+		 */
 		NBGal.testMultiplication();
 		NBGal.testMultiplicativeMatrix();
 		NBGal.testRiseToPow2();
 		NBGal.testInverse();
-		*/
+		
 		
 		/*
 		System.out.println("");
@@ -52,11 +52,11 @@ public class exec {
 		/*Myr T = Myr.LongDiv(Myr.LongMul(A, B), B).Q;
 		System.out.println("(A*B)/B = " + T.toString().toUpperCase());
 		System.out.println("A =       " + A.toString().toUpperCase());
-		System.out.println(a.equals(T.toString().toUpperCase().substring(T.toString().length()-a.length())));	//substring - если вдруг в Т будут нули в начале.
+		System.out.println(a.equals(T.toString().toUpperCase().substring(T.toString().length()-a.length())));	//substring - пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ.
 		
 		*/
 		
-		System.out.println("заняло веремени: " + (System.currentTimeMillis() - start_timer) + " ms");
+		System.out.println("exec time: " + (System.currentTimeMillis() - start_timer) + " ms");
 	}
 	
 }

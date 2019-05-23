@@ -77,32 +77,34 @@ public class Myr {
 		return res;
 	}
 	
-	public String toDecString() {
+	/*public String toDecString() {
 		String res = "";
 		String temp = "";
 		for(int i=0; i<this.size; i++) {
 			temp = Integer.toString(this.marr[this.size-i-1]);
-			while (temp.length() < 4) temp = "0".concat(temp);
+			while (temp.length() < 4) temp = "0".concat(temp); //maybe wrong: 4 hexsymbols != 4 dec symbols
 			res=res.concat(temp);
 		}
 		while(res.length()>0 && res.charAt(0)=='0' ) {
 			res=res.substring(1);
 		}
 		return res;
-	}
+	}*/
 	
 	public String toBinString() {
-		String res = "";
-		String temp = "";
+		//long t0 = System.currentTimeMillis();
+		StringBuilder res = new StringBuilder();
+		StringBuilder temp;
 		for(int i=0; i<this.size; i++) {
-			temp = Integer.toBinaryString(this.marr[this.size-i-1]);
-			while (temp.length() < 16) temp = "0".concat(temp);
-			res=res.concat(temp);
+			temp = new StringBuilder().append(Integer.toBinaryString(this.marr[this.size-i-1]));
+			while (temp.length() < 16) temp = temp.insert(0, '0');
+			res=res.append(temp);
 		}
 		while(res.length()>1 && res.charAt(0)=='0' ) {
-			res=res.substring(1);
+			res=res.deleteCharAt(0);
 		}
-		return res.length()==0 ? "0" : res;
+		//System.out.println("convert: " + (System.currentTimeMillis() - t0));
+		return (res.length()==0 ? "0" : res.toString());
 	}	
 	
 	public static Myr LongAdd(Myr A, Myr B) {
@@ -500,6 +502,26 @@ public class Myr {
 	//4bee3936c723a16d22e846395eb3b7851a77b5111a9c29732fea5ce214aa4b4
 	//137D3DCDC00BE0F9BC13B8CDF5378A88E22A521DD6B809700F25B2028C23E
 
+	public static Myr longPowBarrett_new(Myr x, Myr pow, Myr mod) {
+		String b = pow.toBinString();
+		Myr c = new Myr("1");
+		BarrettReducer br = new BarrettReducer(mod);
+		long t0 = System.currentTimeMillis();
+		for(int i=0; i<b.length(); i++) {
+			System.out.println("for");
+			if(b.charAt(b.length()-i-1) == '1') {
+				System.out.println("if");
+				c = br.reduce(Myr.LongMul(x, c));
+			}
+			System.out.println("endif");
+			
+			x = br.reduce(Myr.LongMul(x, x));
+			System.out.println("endfor");
+		}
+		System.out.println("whole time: " + (System.currentTimeMillis() - t0));
+		return c;//new Myr(c.toString());
+	}
+	
 	public Myr multiply(Myr B) {
 		return LongMul(this, B);
 	}

@@ -1,15 +1,21 @@
 package main;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.locks.Lock;
 
+import com.company.SerializableMessage;
 import com.company.Value;
 import com.hazelcast.client.HazelcastClient;
 import com.hazelcast.client.config.ClientConfig;
-import com.hazelcast.client.impl.protocol.codec.MapClearCodec;
 import com.hazelcast.core.HazelcastInstance;
+import com.hazelcast.core.ILock;
 import com.hazelcast.core.IMap;
+import com.hazelcast.core.ITopic;
 import com.hazelcast.core.TransactionalMap;
 import com.hazelcast.transaction.TransactionContext;
 import com.hazelcast.transaction.TransactionOptions;
@@ -28,23 +34,85 @@ public class Client {
 	}
 	
 	public static void main(String[] args) throws InterruptedException, IOException {
+		BlockingQueue<String> q = client.getQueue("cities");
+		//continous_writing();
+		//distr_topic();
+		distr_lock();
+		//quorum_lock();
+		//bounded_q();
+		//client.shutdown();
+	}
+
+	private static void quorum_lock() throws InterruptedException {
+		Lock lock = client.getLock("quorum_lock");
 		
-		Map<String, String> map = client.getReplicatedMap("map");
-		/*map.put("1", "Tokyo");
-		map.put("2", "Paris");
-		map.put("3", "New York");*/
-		/*map.remove("2");
-		map.put("4", "StPetersbrug");
-		map.put("5", "KamenetsPodolsky");*/
-		/*mapCustomers.put(1, "Joe");
-		mapCustomers.put(2, "Ali");
-		mapCustomers.put(3, "Avi");
-		mapCustomers.put(4, "Ton");
-		mapCustomers.put(5, "Ksyuha");
-		mapCustomers.put(6, "StasAFK");*/
+		//System.out.println(client.);
+		lock.lock();
+		try {
+			System.out.println("что угодно");
+			Thread.sleep(20000);
+			System.out.println("sleep end");
+		} finally {
+			lock.unlock();
+			System.out.println("unlock");
+		}
+	}
+
+	private static void distr_lock() throws InterruptedException {
+		ILock lock = client.getLock("myLock");
+		lock.forceUnlock();
+		for(int i = 0;;i++)
+		 {
+			lock.lock();
+			System.out.println("lock aquired " + i);
+			Thread.sleep(5000);
+			lock.unlock();
+		 }
+		/*try {
+			System.out.println("что угодно");
+			Thread.sleep(20000);
+			System.out.println("sleep end");
+		} finally {
+			lock.unlock();
+			System.out.println("unlock");
+		}*/
+	}
+	
+	private static void distr_topic() {
+		 ITopic<SerializableMessage> topic = client.getTopic("topic");
+		 topic.addMessageListener(new MessageListenerImpl());
+	}
+	
+	private static void bounded_q() throws InterruptedException {
+		BlockingQueue<String> q = client.getQueue("bounded_cities");/*
+		q.add("Kyiv1");
+		System.out.println("add kyiv1");
+		q.add("Kyiv2");
+		System.out.println("add kyiv2");
+		q.add("Kyiv3");
+		System.out.println("add kyiv3");
+		q.add("Kyiv4");
+		System.out.println("add kyiv4");
+		*/
+		Scanner sc = new Scanner(System.in);
+		String s = sc.nextLine();
+		do {
+			s = q.take();
+			System.out.println(s.equals(null) ? "null" : s);
+			Thread.sleep(1000);
+		} while (true);
 		
-		transaction();
-		client.shutdown();
+	}
+
+	private static void continous_writing_blocking_queue() throws IOException, InterruptedException {
+		BlockingQueue<String> q = client.getQueue("cities");
+		
+		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+		String inp = in.readLine();
+		while(!inp.equals("")) {
+			q.put(inp);
+			inp = in.readLine();
+		}
 	}
 
 	private static void transaction() {

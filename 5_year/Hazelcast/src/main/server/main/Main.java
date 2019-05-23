@@ -1,18 +1,29 @@
 package main;
 
+import java.util.Collection;
 import java.util.Map;
-import java.util.Random;
+import java.util.Scanner;
+import java.util.concurrent.locks.Lock;
 
 import com.company.Value;
 import com.hazelcast.config.Config;
 import com.hazelcast.config.JoinConfig;
+import com.hazelcast.config.LockConfig;
+import com.hazelcast.config.QuorumConfig;
+import com.hazelcast.config.QuorumListenerConfig;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
+import com.hazelcast.core.ILock;
 import com.hazelcast.core.IMap;
+import com.hazelcast.core.Member;
+import com.hazelcast.quorum.Quorum;
+import com.hazelcast.quorum.QuorumFunction;
+import com.hazelcast.quorum.QuorumService;
+import com.hazelcast.quorum.QuorumType;
 
 public class Main {
 	
-	static String ip1 = "25.59.39.157";
+	static String ip1 = "25.20.130.138";//"25.59.39.157";
 	static String ip2 = "25.55.37.13";
 			
 	static HazelcastInstance instance;
@@ -23,25 +34,28 @@ public class Main {
 	}
 
 	public static void main(String[] args) throws InterruptedException {
-		Config cfg = new Config();
+		Config cfg = new Config().setInstanceName("myInstance");
 		cfg.getMapConfig("default").setBackupCount(2);
 		JoinConfig join = cfg.getNetworkConfig().getJoin();
 		//cfg.setProperty(name, value);
 		join.getMulticastConfig().setEnabled(false);
 		join.getAwsConfig().setEnabled(false);
 		join.getTcpIpConfig().addMember(ip1).addMember(ip2).setEnabled(true);
+		//cfg.getQuorumConfig("my_qourum").setSize(2).setEnabled(true);
 		
-		instance = Hazelcast.newHazelcastInstance(cfg);
 		
-		Map<String, String> map = instance.getMap("map");
+		QuorumConfig qc = new QuorumConfig("qname", true, 5);
 		
-		while(true) {
-			for(Map.Entry<String, String> e : map.entrySet()) {
-				System.out.println(e.getKey() + "\t" + e.getValue());
-			}
-			Thread.sleep(3000);
-		}
+		LockConfig lc = new LockConfig();
+		lc.setName("myLock").setQuorumName(qc.getName());
 		
+		
+		cfg = cfg.addLockConfig(lc);
+		
+		instance = Hazelcast.newHazelcastInstance();
+		
+		
+		//instance.shutdown();
 		/*Map<Integer, String> mapCustomers = instance.getMap("customers");
 		mapCustomers.put(1, "Joe");
 		mapCustomers.put(2, "Ali");
@@ -61,6 +75,17 @@ public class Main {
 		//pessimisticLock(cfg);
 		//instance.shutdown();
 
+	}
+
+	private static void lock() {
+		ILock lock = instance.getLock("myLock");
+		//System.out.println(instance.getLock("myLock"));
+		System.out.println(instance.getConfig().getLockConfig("myLock").getQuorumName());
+		//System.out.println(new Scanner(System.in).nextLine());
+		lock.lock();
+		System.out.println("locked");
+		lock.unlock();
+		System.out.println("unlocked");
 	}
 
 	public static void noLock(Config cfg) throws InterruptedException {

@@ -8,7 +8,7 @@ public class NBGal {
 	static RealMatrix lambda = null;
 	static int[] powersOf2mod263 = null;
 	boolean[] marr;
-	//Строка инициализации input задает коэффициенты от младшего к старшему. Аналогично они хранятся и в массиве marr.
+	//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ input пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ marr.
 	NBGal(String input) throws IllegalArgumentException {
 		marr = new boolean[m];
 		if(input == "") input = "0";
@@ -109,7 +109,7 @@ public class NBGal {
 	static RealMatrix findMultiplicativeMatrix() {
 		if (NBGal.powersOf2mod263 == null) NBGal.powersOf2mod263 = findPowersOf2mod263();
 		//System.out.println("Calculating lambda...\n");
-		//создать матрицу 131х131 с элементами типа double
+		//пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ 131пїЅ131 пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ double
 		RealMatrix lambda = MatrixUtils.createRealMatrix(m, m);
 		for(int row=0; row<m; row++) {
 			lambda.setRow(row, findKthRow(row));
@@ -166,7 +166,7 @@ public class NBGal {
 	static void testMultiplicativeMatrix() {
 		boolean failDetector = false;
 		
-		m = 3; // пробуем матрицу из примера в методичке.
+		m = 3; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
 		NBGal.powersOf2mod263 = findPowersOf2mod263();
 		NBGal.lambda = NBGal.findMultiplicativeMatrix();
 		double[][] matrixData = {{0,1,0},{1,0,1},{0,1,1}};
@@ -180,7 +180,7 @@ public class NBGal {
 				}
 			}
 		}
-		if(failDetector == true) { // вывести матрицы в консоль. этот блок - для дебага.
+		if(failDetector == true) { // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ - пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ.
 			printMatrix(lambda);
 			System.out.println();
 			printMatrix(lambda_proved);
@@ -244,7 +244,7 @@ public class NBGal {
 		if(res_matrix.getColumnDimension() != 1 || res_matrix.getRowDimension() != 1 ) {
 			throw new Exception("Mistake in vectorMult: invalid result FORM: matrix " + res_matrix.getRowDimension() + "x" + res_matrix.getColumnDimension());
 		}
-		res_matrix.setEntry(0, 0, (res_matrix.getEntry(0,0) % 2d)); //берем по модулю 2
+		res_matrix.setEntry(0, 0, (res_matrix.getEntry(0,0) % 2d)); //пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ 2
 		switch((int)res_matrix.getEntry(0, 0)) {
 			case 1:
 				return true;
@@ -266,7 +266,7 @@ public class NBGal {
 	
 	public static void testMultiplication() throws IllegalArgumentException, Exception {
 		boolean failDetector = false;
-		//пример из практики 3.10.2016
+		//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 3.10.2016
 		m = 3;
 		NBGal arg1 = new NBGal("110"), arg2 = new NBGal("011");
 		//System.out.println(multiply(arg1, arg2).toString());

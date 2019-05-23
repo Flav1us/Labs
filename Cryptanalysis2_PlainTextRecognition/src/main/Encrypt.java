@@ -50,7 +50,7 @@ public class Encrypt {
 	
 	public static char[] vigenere(char[] cbuff) {
 		Random rand = new Random();
-		int r = 5;
+		int r = 10;
 		int[] key = new int[r];
 		for(int i =0; i<key.length;i++) {
 			key[i]=mod32(rand.nextInt());
