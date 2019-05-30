@@ -16,20 +16,26 @@ public class LookupTableTest {
 	//@Ignore
 	@Test
 	public void testReduce() {
-		int num_iter = 100;
+		int num_iter = 100000;
 		for(int i= 0; i < num_iter; i++) {
-			int mod_len = (int)(Math.random()*2047)+1;
-			BigInteger reducable = new BigInteger(mod_len*2 - 1, new Random());
-			BigInteger mod = new BigInteger(mod_len, new Random());
-			assert mod.bitLength() < reducable.bitLength();
+			int mod_len;
+			BigInteger reducable;
+			BigInteger mod;
+			do {
+				mod_len = (int)(Math.random()*2047)+1;
+				reducable = new BigInteger(mod_len*2 - 1, new Random());
+				mod = new BigInteger(mod_len, new Random());
+			} while (mod.bitLength() >= reducable.bitLength() || mod.compareTo(BigInteger.ZERO) == 0);
 			BigInteger reduced = reducable.mod(mod);
 			
 			Myr reducable_m = new Myr(reducable.toString(16));
 			Myr mod_m = new Myr(mod.toString(16));
 			//System.out.println(reducable_m.toString() + "\t" + mod_m.toString());
+			
+			System.out.println("reducing " + reducable.toString(16) + " mod " + mod.toString(16));
 			Myr reduced_m = new BasicLookupReducer(mod_m).reduce(reducable_m);
 			
-			//System.out.println(reduced_m.toString() + "\n" + reduced.toString(16));
+			System.out.println(reduced_m.toString() + "\n" + reduced.toString(16));
 			assertTrue(reduced_m.toString().equals(reduced.toString(16)));
 		}
 	}

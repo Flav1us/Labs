@@ -14,7 +14,7 @@ public class BasicLookupReducer {
 		}
 		this.b = Myr.ONE.shift(1); // L = 16
 		this.mod = mod;
-		this.k = getK(mod);
+		this.k = getK(mod); // definition of k: mod < b^k
 		//System.out.println("k: " + this.k);
 		this.lookup_table = precalculation(this.mod, /*prec_size*/ 2*k);
 	}
@@ -58,7 +58,7 @@ public class BasicLookupReducer {
 		return lookup_table;
 	}
 	
-	public int getK(Myr mod) {
+	public int getK(Myr mod) { //mod < b^k
 		Myr t = this.b;
 		for(int k = 1; k < 1000 ; k++) {
 			if(mod.compareTo(t) < 0) return k;

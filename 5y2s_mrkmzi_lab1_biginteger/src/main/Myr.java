@@ -508,17 +508,17 @@ public class Myr {
 		BarrettReducer br = new BarrettReducer(mod);
 		long t0 = System.currentTimeMillis();
 		for(int i=0; i<b.length(); i++) {
-			System.out.println("for");
+			//System.out.println("for");
 			if(b.charAt(b.length()-i-1) == '1') {
-				System.out.println("if");
+			//	System.out.println("if");
 				c = br.reduce(Myr.LongMul(x, c));
 			}
-			System.out.println("endif");
+			//System.out.println("endif");
 			
 			x = br.reduce(Myr.LongMul(x, x));
-			System.out.println("endfor");
+			//System.out.println("endfor");
 		}
-		System.out.println("whole time: " + (System.currentTimeMillis() - t0));
+		//System.out.println("whole time: " + (System.currentTimeMillis() - t0));
 		return c;//new Myr(c.toString());
 	}
 	

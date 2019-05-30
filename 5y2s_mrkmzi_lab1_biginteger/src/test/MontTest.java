@@ -15,14 +15,15 @@ import main.Myr;
 
 public class MontTest {
 	
+	
 	//@Ignore
 	@Test
 	public void compTest() {
-		int test_cases = 10;
+		int test_cases = 10000;
 		for (int i = 0; i < test_cases; i++) {
-			BigInteger modt = BigInteger.probablePrime(1024, new Random());
-			BigInteger at = new BigInteger(1023, new Random());
-			BigInteger bt = new BigInteger(1023, new Random());
+			BigInteger modt = BigInteger.probablePrime(120, new Random());
+			BigInteger at = new BigInteger(120, new Random());
+			BigInteger bt = new BigInteger(120, new Random());
 			
 			Myr mod = new Myr(modt.toString(16));
 			Myr a = new Myr(at.toString(16));
@@ -32,6 +33,7 @@ public class MontTest {
 
 			MontRed_reference mref = new MontRed_reference(modt);
 			MontReducer red = new MontReducer(mod);
+			
 			Myr d = red.convertOut(red.multiply(red.convertIn(a), red.convertIn(b)));
 
 			assertTrue(c.equals(d));
@@ -40,12 +42,39 @@ public class MontTest {
 			d = red.convertOut(red.pow(red.convertIn(a), b));
 			//System.out.println(c + "\n" + d);
 			
-			System.out.println(c1 + "\n" + d.toString());
+			//System.out.println(c1 + "\n" + d.toString());
 			assertTrue(c1.equals(d.toString()));
 		}
 	}
 	
-	//@Ignore
+	@Ignore
+	@Test
+	public void manual() {
+		BigInteger modt = BigInteger.probablePrime(120, new Random());
+		BigInteger at = new BigInteger(120, new Random());
+		BigInteger bt = new BigInteger("1");
+		
+		Myr mod = new Myr(modt.toString(16));
+		Myr a = new Myr(at.toString(16));
+		Myr b = new Myr(bt.toString(16));
+
+		Myr c = a.multiply(b).mod(mod);
+
+		MontRed_reference mref = new MontRed_reference(modt);
+		MontReducer red = new MontReducer(mod);
+		Myr d = red.convertOut(red.multiply(red.convertIn(a), red.convertIn(b)));
+
+		assertTrue(c.equals(d));
+
+		String c1 = mref.convertOut(mref.pow(mref.convertIn(at), bt)).toString(16);
+		d = red.convertOut(red.pow(red.convertIn(a), b));
+		//System.out.println(c + "\n" + d);
+		
+		//System.out.println(c1 + "\n" + d.toString());
+		assertTrue(c1.equals(d.toString()));
+	}
+	
+	@Ignore
 	@Test
 	public void testConvert() {
 		int n_iter = 10;
@@ -71,7 +100,7 @@ public class MontTest {
 		}
 	}
 	
-	//@Ignore
+	@Ignore
 	@Test
 	public void testMultiplyAndPow() {
 		int n_iter = 10;
@@ -100,7 +129,7 @@ public class MontTest {
 		}
 	}
 	
-	//@Ignore
+	@Ignore
 	@Test
 	public void testFields() {
 		BigInteger modt = BigInteger.probablePrime(1024, new Random());

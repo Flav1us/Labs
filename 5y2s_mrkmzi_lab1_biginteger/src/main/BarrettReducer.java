@@ -31,9 +31,9 @@ public class BarrettReducer {
 		q = q.shiftBits(-shift); //optimize: killLD, but need to redifine shift
 		//q = q.multiply(this.mod);
 		Myr r = Myr.LongSub(z, q.multiply(mod));
-		/*if*/while (Myr.comp(r, this.mod) >= 0) {
+		while (Myr.comp(r, this.mod) >= 0) {
 			//System.out.println(r.toString() + "\n" + this.mod.toString());
-			System.out.println("sub");
+			//System.out.println("sub");
 			r = Myr.LongSub(r, this.mod);
 		}
 		/*if(Myr.comp(r, this.mod) >= 0) {

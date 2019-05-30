@@ -7,25 +7,24 @@ public class exec {
 	static Myr module;
 
 	public static void main(String[] args) throws IllegalArgumentException, Exception {
-		args = new String[5];
+		/*args = new String[4];
 		args[0] = "barr";
-		args[1] = "pow";
-		args[2] = "1";
-		args[3] = "3A**0";
-		args[4] = "0**0";
+		args[1] = "reduce";
+		args[2] = "eefefe1124142";
+		args[3] = "fffffdffddfffaaaaaaa1111111111113231";*/
 		
 
-		args[3] = "2**10000";//"2**10000";
-		args[4] = "123d**5e1";
+		//args[3] = "222222ad";//"2**10000";
+		//args[4] = "123df";
 	
 		//System.out.println(Integer.parseInt("78", 16));
 		
 		exec.args = args;
 		long start_timer = System.currentTimeMillis();
-		System.out.println("args:");
+		/*System.out.println("args:");
 		for(int i = 0; i < args.length; i++) {
 			System.out.println((i+1) + ":\t" + args[i]);
-		}
+		}*/
 		
 		if (args.length < 4) { 
 			System.out.println("At least 4 arguments expected, found " + args.length + ".");
@@ -58,6 +57,8 @@ public class exec {
 					case "pow":
 						powMont();
 						break;
+					case "reduce":
+						reduceMont();
 					default:
 						System.out.println("Unable to parse argument " + args[1] + ". Only pow accepted.");
 						break;
@@ -81,6 +82,8 @@ public class exec {
 		
 		System.out.println("run time: " + (System.currentTimeMillis() - start_timer) + " ms");
 	}
+
+
 
 	//private static void validate() {}
 	
@@ -129,6 +132,22 @@ public class exec {
 			System.out.println(mr.convertOut(mr.pow(mr.convertIn(a), b)).toString());			
 		}
 	}
+	
+	private static void reduceMont() {
+		MontReducer mr = new MontReducer(module);
+		System.out.println("mont reduce (actually mont pow: arg^1 mod m)");
+		Myr a;
+		for(int i = 3; i < args.length; i++) {
+			try {
+				a = new Myr(args[i]);
+			} catch(NumberFormatException e) {
+				System.out.println("Exception during parsing " + args[i] + "\nExpected hexademical numbers.");
+				e.printStackTrace();
+				continue;
+			}
+			System.out.println(mr.convertOut(mr.pow(mr.convertIn(a), Myr.ONE)).toString());
+		}
+	}
 
 	private static void reduceBarrett() {
 		System.out.println("barrett reduction");
@@ -168,7 +187,7 @@ public class exec {
 				continue;
 			}
 			System.out.println(a.toString()+" ^ "+b.toString() + " mod " + module.toString());
-			System.out.println(Myr.LongPowBarrett(a, b, module));			
+			System.out.println(Myr.longPowBarrett_new(a, b, module));			
 		}
 	}
 	
