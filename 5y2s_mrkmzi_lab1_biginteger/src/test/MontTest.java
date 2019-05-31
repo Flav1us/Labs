@@ -9,21 +9,78 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import main.BarrettReducer;
-import main.MontRed_reference;
+import main.LookupReducer;
 import main.MontReducer;
 import main.Myr;
 
 public class MontTest {
 	
-	
 	//@Ignore
 	@Test
+	public void bintTest() {
+		int bitlen = 120;
+		int num_iter = 100;
+		for(int i= 0; i < num_iter; i++) {
+			int mod_len;
+			BigInteger reducable;
+			BigInteger mod;
+			do {
+				mod_len = (int)(Math.random()*bitlen)+2;
+				reducable = BigInteger.probablePrime(mod_len*2 - 1, new Random());//new BigInteger(mod_len*2 - 1, new Random());
+				mod = new BigInteger(mod_len, new Random());
+				System.out.println("while");
+			} while (mod.bitLength() >= reducable.bitLength() || mod.compareTo(BigInteger.ZERO) == 0 || !mod.testBit(0) || mod.equals(new BigInteger("1")));
+			
+			Myr reducable_m = new Myr(reducable.toString(16));
+			Myr mod_m = new Myr(mod.toString(16));
+			//System.out.println(reducable_m.toString() + "\t" + mod_m.toString());
+			
+			System.out.println("reducing " + reducable.toString(16) + " mod " + mod.toString(16));
+			MontReducer mr = new MontReducer(mod_m);
+			Myr reduced_m = mr.convertOut(mr.pow(mr.convertIn(reducable_m), new Myr("1")));
+			
+			
+			//System.out.println(reduced_m.toString());
+			//System.out.println("b\t" + new BarrettReducer(mod_m).reduce(reducable_m));
+			assertTrue(reduced_m.equals(new BarrettReducer(mod_m).reduce(reducable_m)));
+		}
+	}
+	
+	
+	
+	@Ignore
+	@Test
+	public void manual() {
+		BigInteger modt = /*BigInteger.probablePrime*/new BigInteger(60, new Random());
+		BigInteger at = new BigInteger(120, new Random());
+		BigInteger bt = new BigInteger("1");
+		
+		Myr mod = new Myr(modt.toString(16));
+		Myr a = new Myr(at.toString(16));
+		Myr b = new Myr(bt.toString(16));
+
+		//Myr c = a.multiply(b).mod(mod);
+
+		MontReducer red = new MontReducer(mod);
+
+
+		String c1 = at.modPow(bt, modt).toString(16);
+		Myr d = red.convertOut(red.pow(red.convertIn(a), b));
+		//System.out.println(c + "\n" + d);
+		
+		System.out.println(c1 + "\n" + d.toString());
+		assertTrue(c1.equals(d.toString()));
+	}
+	
+	@Ignore
+	@Test
 	public void compTest() {
-		int test_cases = 10000;
+		int test_cases = 1;
 		for (int i = 0; i < test_cases; i++) {
-			BigInteger modt = BigInteger.probablePrime(120, new Random());
-			BigInteger at = new BigInteger(120, new Random());
-			BigInteger bt = new BigInteger(120, new Random());
+			int mod_len = (int)(Math.random()*150)+1;
+			BigInteger modt = BigInteger.probablePrime(mod_len, new Random());
+			BigInteger at = new BigInteger(mod_len-1, new Random());
+			BigInteger bt = new BigInteger(mod_len, new Random());
 			
 			Myr mod = new Myr(modt.toString(16));
 			Myr a = new Myr(at.toString(16));
@@ -42,36 +99,10 @@ public class MontTest {
 			d = red.convertOut(red.pow(red.convertIn(a), b));
 			//System.out.println(c + "\n" + d);
 			
-			//System.out.println(c1 + "\n" + d.toString());
+			System.out.println(c1 + "\n" + d.toString());
+			//System.out.println(Myr.LongPowBarrett(a, b, mod));
 			assertTrue(c1.equals(d.toString()));
 		}
-	}
-	
-	@Ignore
-	@Test
-	public void manual() {
-		BigInteger modt = BigInteger.probablePrime(120, new Random());
-		BigInteger at = new BigInteger(120, new Random());
-		BigInteger bt = new BigInteger("1");
-		
-		Myr mod = new Myr(modt.toString(16));
-		Myr a = new Myr(at.toString(16));
-		Myr b = new Myr(bt.toString(16));
-
-		Myr c = a.multiply(b).mod(mod);
-
-		MontRed_reference mref = new MontRed_reference(modt);
-		MontReducer red = new MontReducer(mod);
-		Myr d = red.convertOut(red.multiply(red.convertIn(a), red.convertIn(b)));
-
-		assertTrue(c.equals(d));
-
-		String c1 = mref.convertOut(mref.pow(mref.convertIn(at), bt)).toString(16);
-		d = red.convertOut(red.pow(red.convertIn(a), b));
-		//System.out.println(c + "\n" + d);
-		
-		//System.out.println(c1 + "\n" + d.toString());
-		assertTrue(c1.equals(d.toString()));
 	}
 	
 	@Ignore

@@ -9,7 +9,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import main.BarrettReducer;
-import main.BasicLookupReducer;
+import main.LookupReducer;
 import main.MontReducer;
 import main.Myr;
 
@@ -40,7 +40,7 @@ public class TotalTest {
 			Myr mod_m = new Myr(ec[i][1].toString(16));
 			assertTrue(ec[i][0].mod(ec[i][1]).equals(ec[i][2]));
 			
-			BasicLookupReducer blr = new BasicLookupReducer(mod_m);
+			LookupReducer blr = new LookupReducer(mod_m);
 			assertTrue(blr.reduce(new Myr(ec[i][0].toString(16))).equals(new Myr(ec[i][2].toString(16))));
 			
 			BarrettReducer br = new BarrettReducer(mod_m);
@@ -52,7 +52,7 @@ public class TotalTest {
 	@Ignore
 	@Test(expected=ArithmeticException.class)
 	public void testExceptions() {
-		BasicLookupReducer blr = new BasicLookupReducer(new Myr("0"));
+		LookupReducer blr = new LookupReducer(new Myr("0"));
 	}
 	
 	@Ignore
@@ -64,7 +64,7 @@ public class TotalTest {
 		for(int i = 0; i < num_iter_mods; i++) {			
 			BigInteger mod_bi = new BigInteger((int)(Math.random()*2048), new Random());
 			Myr mod = new Myr(mod_bi.toString(16));
-			BasicLookupReducer lktr = new BasicLookupReducer(mod);
+			LookupReducer lktr = new LookupReducer(mod);
 			for(int j = 0; j < num_iter_reduces; j++) {
 				BigInteger z_bi = new BigInteger((int)(Math.random()*1024), new Random());
 				Myr z = new Myr(z_bi.toString(16));

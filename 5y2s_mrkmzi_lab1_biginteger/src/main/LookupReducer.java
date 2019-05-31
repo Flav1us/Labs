@@ -2,13 +2,13 @@ package main;
 
 import java.util.Arrays;
 
-public class BasicLookupReducer {
+public class LookupReducer {
 	//private static final int prec_size = 20;
 	Myr mod;
 	Myr[] lookup_table;
 	int k;
 	Myr b;
-	public BasicLookupReducer(Myr mod) {
+	public LookupReducer(Myr mod) {
 		if(mod.equals(Myr.ZERO)) {
 			throw new ArithmeticException("modulus cant be zero");
 		}

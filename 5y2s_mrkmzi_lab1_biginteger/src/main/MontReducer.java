@@ -1,5 +1,7 @@
 package main;
 
+import java.math.BigInteger;
+
 /* 
  * Montgomery reduction algorithm (Java)
  * 
@@ -29,22 +31,24 @@ public final class MontReducer {
 	
 	// The modulus must be an odd number at least 3
 	public MontReducer(Myr modulus) {
-		// Modulus
 		Objects.requireNonNull(modulus);
 		if (modulus.marr[0] % 2 == 0 /*|| modulus.compareTo(Myr.ONE) <= 0*/)
 			throw new IllegalArgumentException("Modulus must be an odd number at least 3");
+		if (modulus.equals(Myr.ONE))
+			throw new IllegalArgumentException("Modulus '1' is not supported");
 		this.modulus = modulus;
 		
 		// Reducer
 		//may take long
 		reducerBits = (modulus.toBinString().length() / 8 + 1) * 8;  // This is a multiple of 8
 		reducer = Myr.ONE.shiftBits(reducerBits);  // This is a power of 256
-		mask = Myr.LongSub(reducer, Myr.ONE);
+		mask = Myr.longSub(reducer, Myr.ONE);
 		//System.out.println(Myr.gcdEvkl(reducer, modulus).toString());
 		assert reducer.compareTo(modulus) > 0 && Myr.gcdEvkl(reducer, modulus).equals(Myr.ONE);
 		
-		// Other computed numbers
-		reciprocal = reducer.modInverse(modulus);
+		//extendeded euclid does not work for nonnegative-only types, so here is kostyl'
+		reciprocal = new Myr(new BigInteger(reducer.toString(), 16).modInverse(new BigInteger(modulus.toString(), 16)).toString(16));//reducer.modInversePrime(modulus);
+		
 		factor = reducer.multiply(reciprocal).subtract(Myr.ONE).divide(modulus); //k
 		convertedOne = reducer.mod(modulus);
 	}

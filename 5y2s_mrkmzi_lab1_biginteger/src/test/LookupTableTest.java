@@ -8,7 +8,7 @@ import java.util.Random;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import main.BasicLookupReducer;
+import main.LookupReducer;
 import main.Myr;
 
 public class LookupTableTest {
@@ -33,7 +33,7 @@ public class LookupTableTest {
 			//System.out.println(reducable_m.toString() + "\t" + mod_m.toString());
 			
 			System.out.println("reducing " + reducable.toString(16) + " mod " + mod.toString(16));
-			Myr reduced_m = new BasicLookupReducer(mod_m).reduce(reducable_m);
+			Myr reduced_m = new LookupReducer(mod_m).reduce(reducable_m);
 			
 			System.out.println(reduced_m.toString() + "\n" + reduced.toString(16));
 			assertTrue(reduced_m.toString().equals(reduced.toString(16)));
@@ -52,7 +52,7 @@ public class LookupTableTest {
 		
 		Myr reducable_m = new Myr(reducable.toString(16));
 		Myr mod_m = new Myr(mod.toString(16));
-		Myr reduced_m = new BasicLookupReducer(mod_m).reduce(reducable_m);
+		Myr reduced_m = new LookupReducer(mod_m).reduce(reducable_m);
 		
 		System.out.println("reduced mod: " + reduced_m.toString());
 		
@@ -75,7 +75,7 @@ public class LookupTableTest {
 		
 		Myr r_m = new Myr(reducable.toString(16));
 		Myr m_m = new Myr(mod.toString(16));
-		Myr reduced = new BasicLookupReducer(m_m).reduce(r_m);
+		Myr reduced = new LookupReducer(m_m).reduce(r_m);
 		assertTrue(reduced.toString().equals("0"));
 	}
 	
@@ -87,7 +87,7 @@ public class LookupTableTest {
 			//BigInteger bint = new BigInteger(2048, new Random());
 			Myr mod = new Myr(bmod.toString(16));
 			//Myr a = new Myr(bint.toString(16));
-			BasicLookupReducer blr = new BasicLookupReducer(mod);
+			LookupReducer blr = new LookupReducer(mod);
 			int k = blr.getK(mod);
 			//System.out.println(k);
 			assertTrue(bmod.compareTo(new BigInteger("2").pow(16*k)) < 0);

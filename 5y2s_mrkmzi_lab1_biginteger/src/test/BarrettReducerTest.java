@@ -27,15 +27,15 @@ public class BarrettReducerTest {
 		}
 	}
 
-	@Ignore
+	//@Ignore
 	@Test
 	public void test_barr() {
-		for(int j = 0; j < 1000; j++) {
+		for(int j = 0; j < 100; j++) {
 		//System.out.println("iter j");
 		BigInteger modb = new BigInteger(1024, new Random());
 		Myr mod = new Myr(modb.toString(16));
 		BarrettReducer br = new BarrettReducer(mod);
-		for(int i = 0; i < 1000; i++) {
+		for(int i = 0; i < 100; i++) {
 			BigInteger xb;
 			do { //ref impl works for x < mod^2.
 				//System.out.println("while");
@@ -46,6 +46,7 @@ public class BarrettReducerTest {
 			//System.out.println(bbr.reduce(x).toString(16));
 			//System.out.println(x.mod(mod).toString(16));
 			//System.out.println();
+			//System.out.println(modb.toString(16) + "\t" + xb.toString(16));
 			assertTrue(br.reduce(x).toString().equals(xb.mod(modb).toString(16)));
 		}
 		}

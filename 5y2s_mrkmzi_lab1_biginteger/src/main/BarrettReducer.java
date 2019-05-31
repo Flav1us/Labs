@@ -3,14 +3,15 @@ package main;
 public class BarrettReducer {
 	Myr mod;
 	Myr mu;
-	int shift;
+	int k;
 	public BarrettReducer(Myr mod) {
 		if(mod.equals(Myr.ZERO)) {
 			throw new ArithmeticException("modulus cant be zero");
 		}
 		//System.out.println("BR constructor:");
 		this.mod = mod;
-		this.shift = mod.toBinString().length()*2;
+		this.k = mod.toBinString().length()/16 + 1;
+		if(mod.toBinString().length() % 16 == 0) k--;
 		this.mu = getMu(mod);
 		//System.out.println("(hex)factor: " + this.mu.toString());
 		//System.out.println("(dec)shift " + shift);
@@ -21,20 +22,22 @@ public class BarrettReducer {
 		/*Myr b = Myr.ONE.shift(1);
 		int k = mod.toBinString().length();
 		return b.pow(new Myr(Integer.toHexString(2*k)).divide(mod));*/
-		return Myr.ONE.shiftBits(shift).divide(mod); // b = 2
+		return Myr.ONE.shift(2*k).divide(mod); // b = 2
 	}
 
 	public Myr reduce(Myr z) {
 		//long t0 = System.currentTimeMillis();
 		if(z.compareTo(mod) < 0) return z;
-		Myr q = Myr.LongMul(z, this.mu);
-		q = q.shiftBits(-shift); //optimize: killLD, but need to redifine shift
+		Myr q = z.shift(-k+1); //optimize: killLD, but need to redifine shift
+		q = q.multiply(this.mu);
+		q = q.shift(-k-1);
 		//q = q.multiply(this.mod);
-		Myr r = Myr.LongSub(z, q.multiply(mod));
+		Myr r = Myr.longSub(z, q.multiply(mod));
 		while (Myr.comp(r, this.mod) >= 0) {
+			//System.out.println(r.size + "\t" +  this.mod.size);
 			//System.out.println(r.toString() + "\n" + this.mod.toString());
 			//System.out.println("sub");
-			r = Myr.LongSub(r, this.mod);
+			r = Myr.longSub(r, this.mod);
 		}
 		/*if(Myr.comp(r, this.mod) >= 0) {
 			System.out.println("r / mod = " + r.divide(mod));

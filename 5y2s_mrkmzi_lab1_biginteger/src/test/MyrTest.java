@@ -27,12 +27,15 @@ public class MyrTest {
 		int n_tests = 10;
 		for(int i = 0; i < n_tests; i++) {
 			System.out.println(i);
-			BigInteger modt = BigInteger.probablePrime(768, new Random());
+			BigInteger modt;
+			do {
+				modt = new BigInteger(768, new Random());
+			} while(!modt.testBit(0));
 			BigInteger at = new BigInteger(700, new Random());
 			BigInteger at_inv = at.modInverse(modt);
 			Myr a = new Myr(at.toString(16));
 			Myr mod = new Myr(modt.toString(16));
-			Myr a_inv = a.modInverse(mod);
+			Myr a_inv = a.modInversePrime(mod);
 			//System.out.println("len " + a_inv.toString().length());
 			//System.out.println(at_inv.toString(16) + "\n" + a_inv.toString());
 			assertTrue(at_inv.toString(16).equals(a_inv.toString()));
@@ -40,6 +43,7 @@ public class MyrTest {
 		}
 		System.out.println(System.currentTimeMillis() - t0 + " ms");
 	}
+
 	
 	@Ignore
 	@Test
@@ -77,13 +81,23 @@ public class MyrTest {
 			Myr b = new Myr(bt.toString(16));
 			Myr m = new Myr(mt.toString(16));
 			
+			String res1 = null, res2 = null;
+			try {
 			t0 = System.currentTimeMillis();
-			String res1 = at.modPow(bt, mt).toString(16);
+			res1 = at.modPow(bt, mt).toString(16);
 			long t1 = System.currentTimeMillis();
 			System.out.println("BigInteger time: " + (t1 - t0) + " ms.");
-			String res2 = Myr.longPowBarrett_new(a, b, m).toString();
+			res2 = Myr.longPowBarrett_new(a, b, m).toString();
 			long t2 = System.currentTimeMillis();
 			System.out.println("Myr time: " + (t2 - t1) + " ms.");
+			} 			 catch(Exception e) {
+				System.out.println("exception");
+				System.out.println("on arguments");
+				System.out.println(at.toString(16) + "\n" + bt.toString(16) + "\n");
+				System.out.println(a.toString() + " ^ " + b.toString() + " mod " + m.toString());
+				e.printStackTrace();
+				throw new AssertionError();
+			}
 			try {
 				assertTrue(res1.equals(res2));
 			} catch(AssertionError e) {
@@ -94,12 +108,11 @@ public class MyrTest {
 				System.out.println("on arguments");
 				System.out.println(at.toString(16) + "\n" + bt.toString(16) + "\n");
 				System.out.println(a.toString() + " ^ " + b.toString() + " mod " + m.toString());
-				e.printStackTrace();
-			}
+				e.printStackTrace();}
 		}
 	}
 	
-	//@Ignore
+	@Ignore
 	@Test
 	public void manualTestLongPowBarr() {
 		//System.out.println("charat "+ "0".charAt(-1));
@@ -197,6 +210,25 @@ public class MyrTest {
 	
 	@Ignore
 	@Test
+	public void testShift() {
+		int numiter = 100;
+		for (int i = 0; i < numiter; i++) {
+			BigInteger bi = new BigInteger(1024, new Random());
+			int shift = (int) (Math.random() * 50 - 25);
+			System.out.println(shift);
+			BigInteger bishift;
+			if (shift >= 0)
+				bishift = bi.shiftLeft(shift * 16);
+			else
+				bishift = bi.shiftRight(-shift * 16);
+			System.out.println(new Myr(bi.toString(16)).shift(shift).toString());
+			System.out.println(bishift.toString(16));
+			assertTrue(new Myr(bi.toString(16)).shift(shift).toString().equals(bishift.toString(16)));
+		}
+	}
+	
+	@Ignore
+	@Test
 	public void testShiftBitsOptimized() {
 		for(int i = 0; i < 100; i++) {
 			BigInteger b_int = new BigInteger(1024, new Random());
@@ -207,6 +239,8 @@ public class MyrTest {
 			System.out.println(s1 + "\n" + s2 + "\n");
 			assertTrue(s1.equals(s2));
 		}
+		
+	
 
 		/*Myr m1 = new Myr("FFFF");
 		for(int i = 0; i < m1.marr.length; i++) System.out.print(Integer.toHexString(m1.marr[i]) + "\t");
