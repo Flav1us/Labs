@@ -7,6 +7,7 @@ import java.util.concurrent.TimeoutException;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
+import org.bson.Document;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -22,13 +23,14 @@ public class RabbitRecieverMain {
 	private static final String RABBIT_USER = "guest";
 	private static final String RABBIT_PASSWORD = "guest";
 	private static final String RABBIT_HOST_IP = "localhost";
-	private static final String INPUT_QUEUE = "test";
-	private static final String OUTPUT_QUEUE = "test";
+	private static final String INPUT_QUEUE = "notes_requests";
+	private static final String OUTPUT_QUEUE = "notes_responses";
 	public static final String CHARSET = "UTF-8";
 
 	private static MongoWorker mw = new MongoWorker();
 
 	private static final Logger logger = Logger.getLogger(RabbitRecieverMain.class);
+	public static final String SEP = "/sep/";
 
 	public static void main(String[] argv) throws Exception {
 		logger.info("main class started");
@@ -51,6 +53,10 @@ public class RabbitRecieverMain {
 			logger.info("Received message '" + message + "'");
 			try {
 				String response = processDelivery(delivery);
+				if (response != null) {
+					output_channel.basicPublish("", OUTPUT_QUEUE, null, response.getBytes(CHARSET));
+					logger.info("response " + response + " sent");
+				}
 			} catch (Exception e) {
 				logger.error("exception during processing delivery", e);
 			} finally {
@@ -63,44 +69,47 @@ public class RabbitRecieverMain {
 	}
 
 	private static String processDelivery(Delivery delivery) throws UnsupportedEncodingException {
+		//{command}/sep/{username}/{note_title}/sep/{note_body}
 		
-		System.out.println("process start");
 		byte[] body = delivery.getBody();
 		String msg = new String(body, CHARSET);
-		String[] args = msg.split(":");
-		if (args.length != 4) {
-			System.out.println("throw");
-			throw new IllegalArgumentException(
-					"cant parse " + msg + " : expected <user_name>:<user_token>:<add|delete>:<note>");
-		}
+		System.out.println("process start " + msg);
+		String[] args = msg.split(SEP);
 		
-		String user = args[0];
-		String token = args[1];
-		String command = args[2];
-		String content = args[3];
-		
+		String command = args[0];
+		 
+		//may be null
 		String response = null;
 		
-		if (isValidToken(token)) {
+		//if (isValidToken(token)) {
 			switch (command) {
-			case "add":
-				System.out.println("ading");
-				mw.add(user, content);
+			case "create":
+				System.out.println("creating");
+				mw.create(args[1], args[2], args[3]);
+				response = "true";
 				break;
 			case "delete":
 				System.out.println("deleting");
-				long num_deleted = mw.delete(user, content);
-				response = "deleted " + num_deleted + " entries";
+				if(mw.delete(args[1])) {	
+				response = "true";
+				} else {
+					response = "false";
+				}
+				break;
+			case "get_by_id":
+				response = mw.get_by_id(args[1], args[2]);
+				break;
+			case "get":
+				response = mw.get(args[1]);
 				break;
 			case "default":
-				response = "no such command: " + command;
-				logger.error(response);
+				logger.error("no such command: " + command);
 				break;
 			}
-		} else {
-			System.out.println("not valid token: " + token);
-		}
-		System.out.println("process end");
+		/*} else {
+			logger.warn("not valid token: " + token);
+		}*/
+		logger.info("returning" + response);
 		return response;
 	}
 

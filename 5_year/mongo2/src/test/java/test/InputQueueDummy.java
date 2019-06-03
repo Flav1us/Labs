@@ -18,7 +18,7 @@ import rabbit.RabbitRecieverMain;
 public class InputQueueDummy {
 
 	private static final String RABBIT_HOST_IP = "localhost";
-	private static final String OUTPUT_QUEUE = "test";
+	private static final String OUTPUT_QUEUE = "notes_requests";
 	private static final String INPUT_QUEUE = null;
 	private static final String ENCODING = "UTF-8";
 	
@@ -29,7 +29,8 @@ public class InputQueueDummy {
 	@Test
 	public void run() throws UnsupportedEncodingException {
 		logger.info("main class started");
-		byte[] test_msg = "ton:12345:add:testrepl_2".getBytes(RabbitRecieverMain.CHARSET);
+		//byte[] test_msg = "delete/sep/2aaa5223727c4a2f".getBytes(RabbitRecieverMain.CHARSET);
+		byte[] test_msg = "get/sep/ton4".getBytes(RabbitRecieverMain.CHARSET);
 		
 		try (Connection connection = getConnection(); 
 		
