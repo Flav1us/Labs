@@ -55,7 +55,21 @@ public class Heys {
 		return res;
 	}
 	
-	
+	public static char permutation(char block) {
+		char res = 0;
+		//System.out.println("round key: " + Integer.toHexString((int)round_key));
+		char[] t = new char[4];
+		for(int i = 0; i < 4; i++) {
+			t[i] = (char) (block >>> 4*i & 0xF);
+			t[i] = (char)  (((t[i] & 0b0001) << 3) ^ // 0bABCD -> 0bA000_B000_C000_D000
+							((t[i] & 0b0010) << 6) ^
+							((t[i] & 0b0100) << 9) ^
+							((t[i] & 0b1000) << 12));
+			t[i] = (char) (t[i] >> 3-i);
+			res ^= t[i];
+		}
+		return res;
+	}
 	
 	public static char decr_round (char block, char round_key) {
 		char permutation = 0;
@@ -76,6 +90,16 @@ public class Heys {
 		}
 		//now round key add
 		res ^= round_key;
+		return res;
+	}
+	
+	public static char S(char x) {
+		char[] t = new char[4];
+		char res = 0;
+		for(int i = 0; i < 4; i++) {
+			t[i] = (char) S[x >>> 4*i & 0xF];
+			res ^= t[i] << 4*i;
+		}
 		return res;
 	}
 

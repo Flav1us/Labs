@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
@@ -91,7 +92,6 @@ public class BranchAndBound {
 					omega[i].remove(child);
 				}
 			}
-			
 		}
 		
 	}

@@ -59,8 +59,11 @@ public class PrecalculationTable {
 			for (Node n : interim) {
 				if (n != null && n.input_prob > Math.pow(minprob, i+1)) {
 					notZeroProb.add(n); }}
-			//System.out.println("notZeroProb " + i + " length: " + notZeroProb.size());
+			System.out.println("notZeroProb " + i + " length: " + notZeroProb.size());
 			content.add(notZeroProb);
+			for(Node t : content.get(i+1)) {
+				System.out.println(Integer.toHexString(t.value) + "\t" + t.input_prob);
+			}
 			// идея - хранить пары дифф с ненулевой вер
 		}
 		if(content.size() != numIter+1) System.out.println("content size == " + content.size() +  " != " +  numIter+1);

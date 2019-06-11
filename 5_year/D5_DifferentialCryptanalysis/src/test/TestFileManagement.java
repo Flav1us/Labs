@@ -80,7 +80,7 @@ public class TestFileManagement {
 		String filepath_basic = dir + "\\" + "m_test.bin";
 		
 		String filepath_different = dir + "\\" + "m_test_different.bin";
-		Attack.generateBasicFiles(filepath_basic, filepath_different, (char)0xFFFF);
+		Attack.generateBasicFiles(filepath_basic, filepath_different, (char)0xFFFF, 1);
 	}
 }
 

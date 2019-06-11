@@ -51,7 +51,7 @@ public class testAttack {
 		for(char c : e) System.out.println(Integer.toHexString(c));
 	}
 	
-	//@Ignore
+	@Ignore
 	@Test
 	public void testExternalEncipher() throws IOException {
 		String dir = "C:\\Users\\ASUS\\Desktop\\D5_CP1\\test";

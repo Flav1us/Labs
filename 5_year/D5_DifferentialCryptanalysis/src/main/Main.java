@@ -1,16 +1,17 @@
 package main;
 //input diff: 1110000000000000,  max_prob: 1000000010001000	3.662947680437373E-4
-
+//result: ba03
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import branch_and_bound.BranchAndBound;
 import branch_and_bound.Node;
 import branch_and_bound.PrecalculationTable;
 
 public class Main {
 
-	static String workdir = "C:\\Users\\ASUS\\Desktop\\D5_CP1";
+	static String workdir = "C:\\Users\\ASUS\\Desktop\\D5_CP2";
 	public Main() {
 		// TODO Auto-generated construcjjjjjjjjjjnnnnnnnnnnnnnnnnnnnnnnnnnmtor stub
 	}
@@ -22,8 +23,11 @@ public class Main {
 		//System.out.println(Integer.toHexString((int) Heys.encrypt((char)0x0000, key)));
 		//calculateDifferentials();
 		//String workdir = "C:\\Users\\ASUS\\Desktop\\D5_CP1";
-		//Attack.generateBasicFiles(workdir + "\\m.bin", workdir + "\\m_different.bin", (char)0b1110000000000000);
-		Attack.attack();
+		Attack.generateBasicFiles(workdir + "\\m.bin", workdir + "\\m_different.bin", (char)0b1110000000000000, 1);
+		
+		Attack.attack(); //ba03
+		
+		//PrecalculationTable.init();
 		
 		System.out.println("time taken: " + (System.currentTimeMillis() - t0) + " ms");
 	}
@@ -60,6 +64,8 @@ public class Main {
 	public static void intersection() throws IOException {
 	 
 	}
+	
+	
 
 	/*private static void expectedNeededTexts() {
 		double res = 1.0;

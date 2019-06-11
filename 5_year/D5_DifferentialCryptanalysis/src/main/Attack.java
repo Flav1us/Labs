@@ -26,13 +26,15 @@ public class Attack {
 	static String filepath_CT_different = workdir + "\\c_different.bin";
 	
 	public static void attack() throws IOException {
-		InputStream is = new FileInputStream(filepath_CT_basic);
 		byte[] b = new byte[Character.MAX_VALUE*2];
+		InputStream is = new FileInputStream(filepath_CT_basic);
 		is.read(b);
+		is.close();
 		
-		is = new FileInputStream(filepath_CT_different);
 		byte[] b_diff = new byte[b.length];
+		is = new FileInputStream(filepath_CT_different);
 		is.read(b_diff);
+		is.close();
 		
 		Map<Character, Character> inp_outp = new HashMap<>();
 		for(int i = 0; i < b.length; i+=2) {
@@ -115,20 +117,13 @@ public class Attack {
 		}
 		return statistic;
 	}
-	
-	public static void general_attack() throws IOException {
-		generateBasicFiles();
-		//encryptFilesWithExternalTool();
-		//readEncrypted();
-		//collectStatistics();
-		//decide();
+
+
+	public static void generateBasicFiles(int decrease_factor) throws IOException {
+		generateBasicFiles(filepath_OT_basic, filepath_OT_different, hiprob_diff.beta, decrease_factor);
 	}
 
-	public static void generateBasicFiles() throws IOException {
-		generateBasicFiles(filepath_OT_basic, filepath_OT_different, hiprob_diff.beta);
-	}
-
-	public static void generateBasicFiles(String filepath_basic, String filepath_different, char differential)
+	public static void generateBasicFiles(String filepath_basic, String filepath_different, char differential, int decrease_factor)
 			throws IOException {
 		byte diff_lower = (byte)differential;
 		byte diff_higher = (byte)(differential >> 8);
@@ -137,7 +132,7 @@ public class Attack {
 		File f_d = new File(filepath_different);
 		OutputStream os_basic = new FileOutputStream(f_b);
 		OutputStream os_diff = new FileOutputStream(f_d);
-		for(int i = 0; i < Character.MAX_VALUE/2; i++) {
+		for(int i = 0; i < Character.MAX_VALUE/decrease_factor; i++) {
 			os_basic.write(i);
 			os_diff.write(i ^ diff_lower);
 			os_basic.write(i/(Byte.MAX_VALUE - Byte.MIN_VALUE + 1));
