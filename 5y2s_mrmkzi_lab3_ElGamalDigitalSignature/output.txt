@@ -1,0 +1,185 @@
+signing C:\Users\ASUS\toHashLong.bin
+-- hashing --
+file length (bytes) : 90
+padding length = 6
+ 
+
+done: 0 / 90	(0.0%)
+M1: 6b61706b61706b61
+Misty: M: 6b61706b61706b61
+Misty: K: 6b61706b61706b61
+Keys: K0 = 6b70616b, K1 = 616b7061, K2 = 9e948f9e, K3 = 948f9e94
+L0: 6b70616b	R0: 616b7061
+L1: 9b3c8d9e
+L2: 6b70616b
+L3: 259c0c13
+L4: e75eced1
+encrypt output: 130c9c25d1ce5ee7
+H1: 786dec4eb0be3586
+ 
+
+done: 8 / 90	(8.88888888888889%)
+M2: 706b61706b61706b
+Misty: M: 706b61706b61706b
+Misty: K: 8068d3edbdf45ed
+Keys: K0 = 3e8d0608, K1 = ed45dfdb, K2 = 12ba2024, K3 = c172f9f7
+L0: 70616b70	R0: 6b70616b
+L1: e0de14fa
+L2: 31725f3c
+L3: 5271ee14
+L4: 36f21f98
+encrypt output: 14ee7152981ff236
+H2: 64851022f37e825d
+ 
+
+done: 16 / 90	(17.77777777777778%)
+M3: 61706b61706b6170
+Misty: M: 61706b61706b6170
+Misty: K: 5f57b438315e32d
+Keys: K0 = 437bf505, K1 = 2de31583, K2 = d21cea7c, K3 = bc840afa
+L0: 616b7061	R0: 70616b70
+L1: 2018c815
+L2: a9abcd2d
+L3: fbd4fc13
+L4: 43153731
+encrypt output: 13fcd4fb31371543
+H3: 728cbf9a415c7433
+ 
+
+done: 24 / 90	(26.666666666666668%)
+M4: 6b61706b61706b61
+Misty: M: 6b61706b61706b61
+Misty: K: 19edcff1202c1f52
+Keys: K0 = f1cfed19, K1 = 521f2c20, K2 = ade0d3df, K3 = e3012e6
+L0: 6b70616b	R0: 616b7061
+L1: 40a7ed62
+L2: 5cd18f37
+L3: 4a9ec583
+L4: 4159059c
+encrypt output: 83c59e4a9c055941
+H4: e8a4ee21fd753220
+ 
+
+done: 32 / 90	(35.55555555555556%)
+M5: 706b61706b61706b
+Misty: M: 706b61706b61706b
+Misty: K: 98cf8f519614424b
+Keys: K0 = 518fcf98, K1 = 4b421496, K2 = b4bdeb69, K3 = ae703067
+L0: 70616b70	R0: 6b70616b
+L1: ace0db72
+L2: 76b10736
+L3: f624f29f
+L4: e57edeb0
+encrypt output: 9ff224f6b0de7ee5
+H5: ef994586dbbf0e8e
+ 
+
+done: 40 / 90	(44.44444444444444%)
+M6: 61706b61706b6170
+Misty: M: 61706b61706b6170
+Misty: K: 8ee92ee7abd46ffe
+Keys: K0 = e72ee98e, K1 = fe6fd4ab, K2 = 1902b54, K3 = 18d11671
+L0: 616b7061	R0: 70616b70
+L1: e31c0171
+L2: aa329a0f
+L3: 36956903
+L4: 1a0b0fe1
+encrypt output: 3699536e10f0b1a
+H6: 6219fe5791646a6a
+ 
+
+done: 48 / 90	(53.333333333333336%)
+M7: 6b61706b61706b61
+Misty: M: 6b61706b61706b61
+Misty: K: 9788e3cf014010b
+Keys: K0 = 3c8e7809, K1 = b0114f0, K2 = f4feeb0f, K3 = c37187f6
+L0: 6b70616b	R0: 616b7061
+L1: 4d78c8f0
+L2: 3eda52e4
+L3: ba18982c
+L4: fa61b2a0
+encrypt output: 2c9818baa0b261fa
+H7: 47f968d1c1c20a9b
+ 
+
+done: 56 / 90	(62.22222222222222%)
+M8: 706b61706b61706b
+Misty: M: 706b61706b61706b
+Misty: K: 379209a1aaa37af0
+Keys: K0 = a1099237, K1 = f07aa3aa, K2 = f855c55, K3 = 5ef66dc8
+L0: 70616b70	R0: 6b70616b
+L1: b1c825e6
+L2: 4cc2dc53
+L3: 3a0f698f
+L4: 230df0ac
+encrypt output: 8f690f3aacf00d23
+H8: ff026e4ac7917d48
+ 
+
+done: 64 / 90	(71.11111111111111%)
+M9: 61706b61706b6170
+Misty: M: 61706b61706b6170
+Misty: K: 9e72052bb7fa1c38
+Keys: K0 = 2b05729e, K1 = 381cfab7, K2 = c7e30548, K3 = d4fa8d61
+L0: 616b7061	R0: 70616b70
+L1: 1bee7749
+L2: b430ae37
+L3: 5c3f3eed
+L4: d8e904e3
+encrypt output: ed3e3f5ce304e9d8
+H9: 8c4e543d936f88a8
+ 
+
+done: 72 / 90	(80.0%)
+M10: 6b61706b61706b61
+Misty: M: 6b61706b61706b61
+Misty: K: e72f2456f21fe3c9
+Keys: K0 = 56242fe7, K1 = c9e31ff2, K2 = 361ce00d, K3 = a9dbd018
+L0: 6b70616b	R0: 616b7061
+L1: f298f23b
+L2: 6ce53560
+L3: 95c596eb
+L4: cef2023d
+encrypt output: eb96c5953d02f2ce
+H10: 80f7b5fe5c7299af
+ 
+
+done: 80 / 90	(88.88888888888889%)
+M11: 706b61706b61706b
+Misty: M: 706b61706b61706b
+Misty: K: f09cd48e3713e9c4
+Keys: K0 = 8ed49cf0, K1 = c4e91337, K2 = 3b16ecc8, K3 = 712b630f
+L0: 70616b70	R0: 6b70616b
+L1: 5ae3f059
+L2: cd77e1e1
+L3: 1ee7dc1d
+L4: 5c82d0b4
+encrypt output: 1ddce71eb4d0825c
+H11: 6db7866edfb1f237
+Misty: M: 6170800000000000
+Misty: K: cc7066edfb1f237
+Keys: K0 = 6e06c70c, K1 = 37f2b1df, K2 = c80d4e20, K3 = 91f938f3
+L0: 807061	R0: 0
+L1: f85fa38c
+L2: f74a70c4
+L3: fdf85044
+L4: 57ab1629
+encrypt output: 4450f8fd2916ab57
+H : 252078fd2916ab57
+ 
+-- signing --
+padded hash: ffffffffffff0057ab1629fd782025
+0 ff ff ff ff ff ff 0 57 ab 16 29 fd 78 20 25 
+X: a69b1f284d33b191fdb59099a0703e0c
+y: 1c7ae18c5609ca811c96e9f9cd13300e
+U: 36c35c862ed90c1327d086cb0ca7f939
+H: ffffffffffff0057ab1629fd782025
+Z: 53cf40a11821267088b678267518ad9a
+g: 43e7fff73c1d9f77bf8979ad58de0d60
+K: 4a8470da2ae76ba9c46cd64641be38fc
+S: 8e1e8ff7e0f1dcc1aa064ec190e71bef
+verification:
+6f5606618bd523236296686e1ce3f1a
+6f5606618bd523236296686e1ce3f1a
+k = 4a8470da2ae76ba9c46cd64641be38fc
+S = 8e1e8ff7e0f1dcc1aa064ec190e71bef
