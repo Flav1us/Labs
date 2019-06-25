@@ -68,10 +68,10 @@ public class MongoWorker {
 		Bson filter = eq("user", user);
 		MongoCursor<Document> c = db.getCollection(COLL_NAME).find(filter).iterator();
 		StringBuilder res = new StringBuilder();
+		res.append(user).append(SEP);
 		while(c.hasNext()) {
 			Document d = c.next();
 			res.append(d.getString("_id")).append(SEP)
-			.append(d.getString("user")).append(SEP)
 			.append(d.getString("title")).append(SEP)
 			.append(d.getString("content")).append(SEP);
 		}

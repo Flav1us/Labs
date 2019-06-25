@@ -2,12 +2,9 @@ package rabbit;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.IllegalFormatException;
 import java.util.concurrent.TimeoutException;
 
 import org.apache.log4j.Logger;
-import org.apache.log4j.Priority;
-import org.bson.Document;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -15,13 +12,11 @@ import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.DeliverCallback;
 import com.rabbitmq.client.Delivery;
 
-import rabbit.MongoWorker;
-import test.LogTest;
-
 public class RabbitRecieverMain {
 
 	private static final String RABBIT_USER = "guest";
 	private static final String RABBIT_PASSWORD = "guest";
+	private static final boolean needRabitHostPasswd = false;
 	private static final String RABBIT_HOST_IP = "localhost";
 	private static final String INPUT_QUEUE = "notes_requests";
 	private static final String OUTPUT_QUEUE = "notes_responses";
@@ -37,14 +32,16 @@ public class RabbitRecieverMain {
 
 		ConnectionFactory factory = new ConnectionFactory();
 		factory.setHost(RABBIT_HOST_IP);
-		// factory.setUsername(RABBIT_USER);
-		// factory.setPassword(RABBIT_PASSWORD);
+		if (needRabitHostPasswd) {
+			factory.setUsername(RABBIT_USER);
+			factory.setPassword(RABBIT_PASSWORD);
+		}
 		Connection connection = factory.newConnection();
 		Channel input_channel = connection.createChannel();
 		Channel output_channel = connection.createChannel();
 
-		input_channel.queueDeclare(INPUT_QUEUE, false, false, false, null);
-		output_channel.queueDeclare(OUTPUT_QUEUE, false, false, false, null);
+		input_channel.queueDeclare(INPUT_QUEUE, true, false, false, null);
+		output_channel.queueDeclare(OUTPUT_QUEUE, true, false, false, null);
 		
 		System.out.println("r: Waiting for messages.");
 		
@@ -88,7 +85,7 @@ public class RabbitRecieverMain {
 				mw.create(args[1], args[2], args[3]);
 				response = "true";
 				break;
-			case "delete":
+			case "delete"://case "remove":
 				System.out.println("deleting");
 				if(mw.delete(args[1])) {	
 				response = "true";
@@ -109,7 +106,7 @@ public class RabbitRecieverMain {
 		/*} else {
 			logger.warn("not valid token: " + token);
 		}*/
-		logger.info("returning" + response);
+		//logger.info("returning " + response);
 		return response;
 	}
 
@@ -122,8 +119,10 @@ public class RabbitRecieverMain {
 	private static Connection getConnection() throws IOException, TimeoutException {
 		ConnectionFactory factory = new ConnectionFactory();
 		factory.setHost(RABBIT_HOST_IP);
-		// factory.setUsername(RABBIT_USER);
-		// factory.setPassword(RABBIT_PASSWORD);
+		if (needRabitHostPasswd) {
+			factory.setUsername(RABBIT_USER);
+			factory.setPassword(RABBIT_PASSWORD);
+		}
 		Connection connection = factory.newConnection();
 		return connection;
 	}

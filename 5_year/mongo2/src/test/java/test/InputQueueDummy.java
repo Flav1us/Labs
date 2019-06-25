@@ -29,14 +29,14 @@ public class InputQueueDummy {
 	@Test
 	public void run() throws UnsupportedEncodingException {
 		logger.info("main class started");
-		//byte[] test_msg = "delete/sep/2aaa5223727c4a2f".getBytes(RabbitRecieverMain.CHARSET);
-		byte[] test_msg = "get/sep/ton4".getBytes(RabbitRecieverMain.CHARSET);
+		byte[] test_msg = "get/sep/ton1".getBytes(RabbitRecieverMain.CHARSET);
+		//byte[] test_msg = "get/sep/ton4".getBytes(RabbitRecieverMain.CHARSET);
 		
 		try (Connection connection = getConnection(); 
 		
 			Channel output_channel = connection.createChannel();) {
 
-			output_channel.queueDeclare(OUTPUT_QUEUE, false, false, false, null);
+			output_channel.queueDeclare(OUTPUT_QUEUE, true, false, false, null);
 			System.out.println("s: sending messages.");
 			
 			output_channel.basicPublish("", OUTPUT_QUEUE, null, test_msg);
